@@ -12,3 +12,6 @@ const userSlice = createSlice({
     }
 
 })
+
+// export const {setColor,setBookingHotel} = UserSlice.actions;
+export default userSlice.reducer;

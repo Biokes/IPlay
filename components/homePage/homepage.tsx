@@ -5,15 +5,15 @@ import {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material"
 import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
-import {ChartData, TrackData} from '@/interface/interfaces'
+import {ChartData} from '@/interface/interfaces'
 import getLastThursday from '@/functions/func';
 
 export default function HomePage(){
     const [mostPlayedSongs, setMostPlayedSongs] = useState<ChartData[]>([])
     const [isLoading, setLoading] = useState<boolean>(false);
     const [searchInput,setSearchInput] = useState<string>('')
-    const HandleSearch=()=>{
-    }
+    // const HandleSearch=()=>{
+    // }
 
     const getMostPlayedTracks= async ()=>{
         const url = `https://spotify81.p.rapidapi.com/top_200_tracks?country=NG&period=weekly&date=${getLastThursday()}`;
@@ -32,7 +32,6 @@ export default function HomePage(){
                     console.log(result);
                     setMostPlayedSongs(result)
                 }
-
             } catch (error) {
                 console.error("Cause of Error: ",error);
             }
@@ -41,7 +40,7 @@ export default function HomePage(){
         useEffect(()=> {
             setLoading(true);
             getMostPlayedTracks();
-        })
+        }, [])
     
     const Navbar=()=>{
         return (
@@ -65,30 +64,35 @@ export default function HomePage(){
     function RightBar (args: {data: ChartData[]}){
         return (
           <div className={'px-[20px] md:px-0 mt-[50px]'}>
-              <form>
-                <div className='border-[1px] border-white flex w-full md:w-[400px] rounded-[10px] overflow-hidden'>
-                    <input type="text" placeholder={"Search artist"}
-                        className={`w-[90%] px-[10px] h-[50px] focus:outline-none outlie-none`}/>
+                <form className='border-[1px] border-white flex w-full md:w-[400px] rounded-[10px] overflow-hidden' >
+                    <input type="text" placeholder={"Search artist"} onChange={(e)=>setSearchInput(e.target.value)} value={searchInput}
+                        className={`w-[90%] px-[10px] h-[50px] focus:outline-none outline-none`}/>
                         <div className='w-[10%]'>
                             <SearchIcon className={"w-[100%] h-[50px] hover:cursor-pointer hover:bg-gray-300 hover:text-gray-900"}/>
                         </div>
-                </div>
-              </form>            
+                </form>
               <div>
                     <div className='flex justify-between items-center px-[10px] h-[40px]'>
                         <p>Most Played Songs</p>
                         <p>see all</p>
                     </div>
-                    <section className={'flex justify-between items-center'}>
+                    <section className={'flex justify-between items-center w-full px-[20px]'}>
                         {navigator.onLine?
-                            args.data.slice(0,4).map((data, index)=>(
-                                <section key={index}>
-                                    <div className={'w-[150px]'}>
-                                        <Image src={data.trackMetadata.displayImageUri} width={100} height={100} alt=''/>
+                            <>
+                                {!isLoading?
+                                    args.data.slice(0,4).map((data, index)=>(
+                                        <section key={index}>
+                                            <div className={'w-[150px]'}>
+                                                <Image src={data.trackMetadata.displayImageUri} width={100} height={100} alt=''/>
+                                            </div>
+                                            <p>{data.trackMetadata.artists[0].name}</p>
+                                        </section>
+                                    )):
+                                    <div className={'h-[150px] w-full'}>
+                                        <CircularProgress size={40}/>
                                     </div>
-                                    <p>{data.trackMetadata.artists[0].name}</p>
-                                </section>
-                            ))
+                                }
+                            </>
                             :
                             <div className='h-[150px] items-center justify-center'>
                                 <p>You are currently offline</p>
