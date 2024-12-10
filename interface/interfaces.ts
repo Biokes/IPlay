@@ -9,3 +9,38 @@ export interface TrackData {
     in_spotify_charts: string;
     in_spotify_playlists: string;
 }
+export interface RankingMetric {
+    value: string;
+    type: string;
+  }
+  
+export interface Artist {
+    name: string;
+    uri: string;
+}
+
+export interface TrackMetadata {
+    trackName: string;
+    trackUri: string;
+    displayImageUri: string;
+    artists: Artist[];
+}
+
+export interface ChartEntryData {
+    currentRank: number;
+    previousRank: number;
+    peakRank: number;
+    peakDate: string;
+    appearancesOnChart: number;
+    consecutiveAppearancesOnChart: number;
+    rankingMetric: RankingMetric;
+    entryStatus: string;
+    entryRank: number;
+    entryDate: string;
+}
+
+export interface ChartData {
+    chartEntryData: ChartEntryData;
+    missingRequiredFields: boolean;
+    trackMetadata: TrackMetadata;
+}
