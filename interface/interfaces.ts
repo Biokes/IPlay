@@ -44,3 +44,6 @@ export interface ChartData {
     missingRequiredFields: boolean;
     trackMetadata: TrackMetadata;
 }
+export interface UserData{
+    
+}
