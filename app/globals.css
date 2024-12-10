@@ -13,6 +13,9 @@
     --foreground: #ededed;
   }
 }
+p{
+  text-transform: capitalize;
+}
 
 body {
   color: var(--foreground);
