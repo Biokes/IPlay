@@ -3,13 +3,13 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PersonIcon from '@mui/icons-material/Person';
 import {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material"
-import Img from 'next/image';
+import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
 import {ChartData, TrackData} from '@/interface/interfaces'
 import getLastThursday from '@/functions/func';
 
 export default function HomePage(){
-    const [mostPlayedSongs, setMostPlayedSongs] = useState<TrackData[]>([])
+    const [mostPlayedSongs, setMostPlayedSongs] = useState<ChartData[]>([])
     const [isLoading, setLoading] = useState<boolean>(false);
     const [searchInput,setSearchInput] = useState<string>('')
     const HandleSearch=()=>{
@@ -32,6 +32,7 @@ export default function HomePage(){
                     console.log(result);
                     setMostPlayedSongs(result)
                 }
+
             } catch (error) {
                 console.error("Cause of Error: ",error);
             }
@@ -78,20 +79,18 @@ export default function HomePage(){
                         <p>Most Played Songs</p>
                         <p>see all</p>
                     </div>
-                    <section className={'colummns-[100px]'}>
+                    <section className={'flex justify-between items-center'}>
                         {navigator.onLine?
-                            args.data.map((data, index)=>(
+                            args.data.slice(0,4).map((data, index)=>(
                                 <section key={index}>
-                                    <div>
-                                        <Img src={data.trackMetadata.displayImageUri}/>
+                                    <div className={'w-[150px]'}>
+                                        <Image src={data.trackMetadata.displayImageUri} width={100} height={100} alt=''/>
                                     </div>
-                                    <p>{data.track_name}</p>
-                                    <p>{`${data.released_day}/${data.released_month}/${data.released_year}`}</p>
-                                    <p>{data.streams}</p>
+                                    <p>{data.trackMetadata.artists[0].name}</p>
                                 </section>
                             ))
                             :
-                            <div>
+                            <div className='h-[150px] items-center justify-center'>
                                 <p>You are currently offline</p>
                             </div>
                         }
