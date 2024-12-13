@@ -24,5 +24,5 @@ const songSLice = createSlice({
     }
 })
 
-export const {setTopSongs, setLastDateUpdated} = songSLice.actions;
+export const {setTopSongs, setLastDateUpdated,setGlobalTrends} = songSLice.actions;
 export default songSLice.reducer;
