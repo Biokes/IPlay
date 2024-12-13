@@ -1,11 +1,12 @@
+
 .mappedImag{
-    @apply flex flex-col items-center justify-center
+    @apply flex flex-col items-center justify-center py-[10px]
 }
 .mappedImag >div{
-    @apply  w-[100px] md:w-[150px] rounded-[30%] overflow-hidden items-center flex justify-between border-[4px] border-gray-500;
+    @apply  w-[50px] md:w-[100px] rounded-[30%] overflow-hidden items-center flex justify-between border-[2px] border-gray-500;
 }
 .mappedImag p{
-    @apply text-[10px] md:text-[15px] font-[720] text-nowrap text-ellipsis
+    @apply text-[10px] md:text-[15px] md:font-[720] truncate max-w-[50px] md:max-w-[100px]
 }
 .leftBar{
     @apply hidden md:flex md:flex-col h-[100%] md:w-[20%] md:py-[10px] md:ml-[10px] pt-[40px]
@@ -17,15 +18,17 @@
     @apply py-[10px] text-[20px] hover:bg-blue-400 hover:text-white px-[30px] mx-[5px] rounded-md hover:cursor-pointer
 }
 .rightBar{
-    @apply pl-[20px] md:px-0 pt-[20px] border-[1px] rounded-md border-white w-[100%]
+    @apply md:pl-[20px] md:px-0 pt-[20px] border-[1px] rounded-md border-white w-[100%] flex flex-col gap-[10px]
 }
 .inputBar{
-    @apply border-[1px] border-white flex w-full md:w-[400px] rounded-[10px] overflow-hidden md:justify-end
-
-}
-.hoverText{
-    @apply hover:cursor-pointer;
+    @apply ml-[10px] md:ml-0 border-[1px] border-white flex w-full md:w-[400px] rounded-[10px] overflow-hidden md:justify-end
 }
 .headers{
-    @apply bg-gray-800 flex justify-between items-center px-[20px] h-[40px] border-b-white border-[1px]
+    @apply bg-gray-800 flex justify-between items-center px-[10px] md:px-[20px] h-[20px] md:h-[40px] border-b-white border-[1px]
+}
+.trackName{
+    @apply md:max-w-[100px] text-nowrap text-[40px] overflow-ellipsis text-[11px] md:text-[15px]
+}
+.headers> p{
+    @apply text-[10px] md:text-[15px] hover:cursor-pointer
 }

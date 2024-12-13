@@ -1,29 +1,26 @@
 'use client'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PersonIcon from '@mui/icons-material/Person';
-import {useEffect, useState} from "react";
+import {useState, useEffect} from "react";
 import {CircularProgress} from "@mui/material"
 import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
 import {ChartData} from '@/interface/interfaces'
 import {useAppDispatch, useAppSelector} from "@/redux/store";
-import {setTopSongs} from "@/redux/songSlice";
+import {setTopSongs, setGlobalTrends} from "@/redux/songSlice";
 import styles from '@/styles/home.module.css';
 
-export default function HomePage(){
+export default function HomePage() {
+    
     const [mostPlayedSongs, setMostPlayedSongs] = useState<ChartData[]>([])
     const [isLoading, setLoading] = useState<boolean>(false);
     const [searchInput,setSearchInput] = useState<string>('')
     const isOnline = navigator.onLine;
     const dispatch = useAppDispatch();
-    const [globalTrends, setGlobalTrends] = useState<ChartData[]>([])
+    const [globalTrends, setGlobalTrendsData] = useState<ChartData[]>([])
     const topSongsPersisted = useAppSelector(state => state.songs.topSongs)
-    useEffect(() => {
-        if (isOnline){
-            getMostPlayedTracks();
-            getGlobalTrends();
-        }
-    }, []);
+    const globalSongsPersisted = useAppSelector(state => state.songs.globalTrends);
+
     const getGlobalTrends = async () => { 
         const url = 'https://spotify81.p.rapidapi.com/top_200_tracks?country=GLOBAL';
         const options = {
@@ -35,10 +32,17 @@ export default function HomePage(){
         };
 
         try {
-            const response = await fetch(url, options);
-            const result = await response.json();
-            console.log(result);
-            setGlobalTrends(result)
+            if (navigator.onLine) {
+                if (!globalSongsPersisted || globalSongsPersisted.length === 0) {
+                    const response = await fetch(url, options);
+                    const result = await response.json();
+                    setGlobalTrendsData(result)
+                    dispatch(setGlobalTrends(globalTrends))
+                    console.log("fetch Data 1")
+                }
+            } else {
+                setMostPlayedSongs(topSongsPersisted)
+            }
         } catch (error) {
             console.error(error);
         }
@@ -58,10 +62,12 @@ export default function HomePage(){
                     if (!topSongsPersisted || topSongsPersisted.length === 0) {
                         const response = await fetch(url, options);
                         const result = await response.json();
-                        console.log(result);
-                        setMostPlayedSongs(result)
-                        dispatch(setTopSongs(result))
-                     }
+                        setMostPlayedSongs(result);
+                        dispatch(setTopSongs(result));
+                        console.log("fetch Data 2")
+                    }
+                } else { 
+                    setMostPlayedSongs(topSongsPersisted)
                 }
             } catch (error) {
                 console.error("Cause of Error: ",error);
@@ -70,10 +76,11 @@ export default function HomePage(){
             }finally{
                 setLoading(false);
             }
-        }
-    console.log("Persisted Data ", topSongsPersisted)
-    console.log("isOnline", navigator.onLine)
-
+    }
+    useEffect(() => {
+        getGlobalTrends();
+        getMostPlayedTracks()
+    },[])
     const Navbar=()=>{
         return (
             <div className={'flex items-center justify-between bg-blue-500 p-[5px_10%] rounded-md'}>
@@ -101,7 +108,7 @@ export default function HomePage(){
                     <p className={styles.hoverText}>see all</p>
                 </div>
                 <section className={`flex justify-around items-center w-full`}>
-                    {isOnline ?
+                    {args.globalTrends ?
                         <>
                             {!isLoading ?
                                 <>
@@ -109,7 +116,7 @@ export default function HomePage(){
                                         args.globalTrends.slice(0, 5).map((data, index) => (
                                             <section key={index} className={`${styles.mappedImag}`}>
                                                 <div>
-                                                    <Image src={data.trackMetadata.displayImageUri} width={150} height={150} className={' object-center object-cover'} alt='' />
+                                                    <Image src={data.trackMetadata.displayImageUri} width={120} height={120} className={' object-center object-cover'} alt='' />
                                                 </div>
                                                 <p>{data.trackMetadata.artists[0].name}</p>
                                                 <p>{data.trackMetadata.trackName}</p>
@@ -151,9 +158,9 @@ export default function HomePage(){
               <div className={''}>
                   <div className={styles.headers}>
                       <p>Trending Songs</p>
-                      <p className={styles.hoverText}>see all</p>
+                      <p>see all</p>
                   </div>
-                  <section className={`flex justify-around items-center w-full`}>
+                  <section className={`flex justify-around items-center w-full md:py-[10px]`}>
                       {isOnline ?
                           <>
                                 {!isLoading ?
@@ -162,10 +169,10 @@ export default function HomePage(){
                                             args.data.slice(0, 5).map((data, index) => (
                                                 <section key={index} className={`${styles.mappedImag}`}>
                                                     <div>
-                                                        <Image src={data.trackMetadata.displayImageUri} width={150} height={150} className={' object-center object-cover'} alt='' />
+                                                        <Image src={data.trackMetadata.displayImageUri} width={120} height={120} className={' object-center object-cover'} alt='' />
                                                     </div>
                                                     <p>{data.trackMetadata.artists[0].name}</p>
-                                                    <p>{data.trackMetadata.trackName}</p>
+                                                    <p className={styles.trackName}>{data.trackMetadata.trackName}</p>
                                                 </section>
                                             ))
                                         }
