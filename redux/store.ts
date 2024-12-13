@@ -1,19 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import UserSlice from '@/redux/userSlice';
+import songSlice from '@/redux/songSlice';
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 
 const persistConfig = {
     key: 'hotels_root',
     storage,
-    whitelist: ['color','bookingHotel', 'result'],
+    whitelist: ['songs'],
 };
-const persistedReducer = persistReducer(persistConfig, UserSlice);
+const persistedReducer = persistReducer(persistConfig, songSlice);
 
 export const store = configureStore({
     reducer: {
-        user: persistedReducer
+        songs: persistedReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

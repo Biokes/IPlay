@@ -6,42 +6,74 @@ import {CircularProgress} from "@mui/material"
 import Image from 'next/image';
 import SearchIcon from '@mui/icons-material/Search';
 import {ChartData} from '@/interface/interfaces'
-import getLastThursday from '@/functions/func';
+import {useAppDispatch, useAppSelector} from "@/redux/store";
+import {setTopSongs} from "@/redux/songSlice";
+import styles from '@/styles/home.module.css';
 
 export default function HomePage(){
     const [mostPlayedSongs, setMostPlayedSongs] = useState<ChartData[]>([])
     const [isLoading, setLoading] = useState<boolean>(false);
     const [searchInput,setSearchInput] = useState<string>('')
-    // const HandleSearch=()=>{
-    // }
-
-    const getMostPlayedTracks= async ()=>{
-        const url = `https://spotify81.p.rapidapi.com/top_200_tracks?country=NG&period=weekly&date=${getLastThursday()}`;
+    const isOnline = navigator.onLine;
+    const dispatch = useAppDispatch();
+    const [globalTrends, setGlobalTrends] = useState<ChartData[]>([])
+    const topSongsPersisted = useAppSelector(state => state.songs.topSongs)
+    useEffect(() => {
+        if (isOnline){
+            getMostPlayedTracks();
+            getGlobalTrends();
+        }
+    }, []);
+    const getGlobalTrends = async () => { 
+        const url = 'https://spotify81.p.rapidapi.com/top_200_tracks?country=GLOBAL';
         const options = {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-key': 'febfd66cf9msh276ca2c333c55b2p17a072jsnb411682e032e',
+                'x-rapidapi-host': 'spotify81.p.rapidapi.com'
+            }
+        };
+
+        try {
+            const response = await fetch(url, options);
+            const result = await response.json();
+            console.log(result);
+            setGlobalTrends(result)
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    const getMostPlayedTracks = async () => {
+            const url = 'https://spotify81.p.rapidapi.com/top_200_tracks?country=NG';
+            const options = {
                 method: 'GET',
                 headers: {
                     'x-rapidapi-key': 'febfd66cf9msh276ca2c333c55b2p17a072jsnb411682e032e',
                     'x-rapidapi-host': 'spotify81.p.rapidapi.com'
                 }
-        };
-
+            };
             try {
-                if(navigator.onLine){
-                    const response = await fetch(url, options);
-                    const result = await response.json();
-                    console.log(result);
-                    setMostPlayedSongs(result)
+                setLoading(true)
+                if (navigator.onLine) {
+                    if (!topSongsPersisted || topSongsPersisted.length === 0) {
+                        const response = await fetch(url, options);
+                        const result = await response.json();
+                        console.log(result);
+                        setMostPlayedSongs(result)
+                        dispatch(setTopSongs(result))
+                     }
                 }
             } catch (error) {
                 console.error("Cause of Error: ",error);
+                if(error instanceof Error) {
+                }
+            }finally{
+                setLoading(false);
             }
         }
+    console.log("Persisted Data ", topSongsPersisted)
+    console.log("isOnline", navigator.onLine)
 
-        useEffect(()=> {
-            setLoading(true);
-            getMostPlayedTracks();
-        }, [])
-    
     const Navbar=()=>{
         return (
             <div className={'flex items-center justify-between bg-blue-500 p-[5px_10%] rounded-md'}>
@@ -61,55 +93,123 @@ export default function HomePage(){
         )
     }
 
-    function RightBar (args: {data: ChartData[]}){
+    function GlobalTrendsComponent(args: { globalTrends: ChartData[] }) {
         return (
-          <div className={'px-[20px] md:px-0 mt-[50px]'}>
-                <form className='border-[1px] border-white flex w-full md:w-[400px] rounded-[10px] overflow-hidden' >
-                    <input type="text" placeholder={"Search artist"} onChange={(e)=>setSearchInput(e.target.value)} value={searchInput}
-                        className={`w-[90%] px-[10px] h-[50px] focus:outline-none outline-none`}/>
-                        <div className='w-[10%]'>
-                            <SearchIcon className={"w-[100%] h-[50px] hover:cursor-pointer hover:bg-gray-300 hover:text-gray-900"}/>
+            <div className={''}>
+                <div className={styles.headers}>
+                    <p>Global Trends</p>
+                    <p className={styles.hoverText}>see all</p>
+                </div>
+                <section className={`flex justify-around items-center w-full`}>
+                    {isOnline ?
+                        <>
+                            {!isLoading ?
+                                <>
+                                    {
+                                        args.globalTrends.slice(0, 5).map((data, index) => (
+                                            <section key={index} className={`${styles.mappedImag}`}>
+                                                <div>
+                                                    <Image src={data.trackMetadata.displayImageUri} width={150} height={150} className={' object-center object-cover'} alt='' />
+                                                </div>
+                                                <p>{data.trackMetadata.artists[0].name}</p>
+                                                <p>{data.trackMetadata.trackName}</p>
+                                            </section>
+                                        ))
+                                    }
+
+                                </>
+                                :
+                                <div className={'h-[150px] w-full flex justify-center items-center bg-gray-800'}>
+                                    <div>
+                                        <CircularProgress size={40} />
+                                    </div>
+                                </div>
+                            }
+                        </>
+                        :
+                        <div className={'h-[150px] flex items-center justify-center w-full'}>
+                            <p>Sorry, No Data Available </p>
                         </div>
-                </form>
-              <div>
-                    <div className='flex justify-between items-center px-[10px] h-[40px]'>
-                        <p>Most Played Songs</p>
-                        <p>see all</p>
-                    </div>
-                    <section className={'flex justify-between items-center w-full px-[20px]'}>
-                        {navigator.onLine?
-                            <>
-                                {!isLoading?
-                                    args.data.slice(0,4).map((data, index)=>(
-                                        <section key={index}>
-                                            <div className={'w-[150px]'}>
-                                                <Image src={data.trackMetadata.displayImageUri} width={100} height={100} alt=''/>
-                                            </div>
-                                            <p>{data.trackMetadata.artists[0].name}</p>
-                                        </section>
-                                    )):
-                                    <div className={'h-[150px] w-full'}>
-                                        <CircularProgress size={40}/>
+                    }
+                </section>
+            </div>
+        )
+    }
+
+    function RightBar(args: { data: ChartData[] }) {
+        return (
+          <div className={styles.rightBar}>
+              <div className={'w-full flex md:justify-end md:pr-[7px] md:pb-[7px]'}>
+                  <form className={styles.inputBar}>
+                      <input type="text" placeholder={"Search artist"} onChange={(e)=>setSearchInput(e.target.value)}
+                             value={searchInput} className={`w-[90%] px-[10px] h-[50px] focus:outline-none outline-none text-black`}/>
+                      <div className={'w-[10%]'}>
+                          <SearchIcon className={"w-[100%] h-[50px] hover:cursor-pointer hover:bg-gray-300 hover:text-gray-900"}/>
+                      </div>
+                  </form>
+              </div>
+              <div className={''}>
+                  <div className={styles.headers}>
+                      <p>Trending Songs</p>
+                      <p className={styles.hoverText}>see all</p>
+                  </div>
+                  <section className={`flex justify-around items-center w-full`}>
+                      {isOnline ?
+                          <>
+                                {!isLoading ?
+                                    <>
+                                        {
+                                            args.data.slice(0, 5).map((data, index) => (
+                                                <section key={index} className={`${styles.mappedImag}`}>
+                                                    <div>
+                                                        <Image src={data.trackMetadata.displayImageUri} width={150} height={150} className={' object-center object-cover'} alt='' />
+                                                    </div>
+                                                    <p>{data.trackMetadata.artists[0].name}</p>
+                                                    <p>{data.trackMetadata.trackName}</p>
+                                                </section>
+                                            ))
+                                        }
+                                    
+                                    </>
+                                  :
+                                    <div className={'h-[150px] w-full flex justify-center items-center bg-gray-800'}>
+                                        <div>
+                                            <CircularProgress size={40}/>
+                                        </div>
                                     </div>
                                 }
                             </>
                             :
-                            <div className='h-[150px] items-center justify-center'>
-                                <p>You are currently offline</p>
+                            <div className={'h-[150px] flex items-center justify-center w-full'}>
+                                <p>Sorry, No Data Available </p>
                             </div>
                         }
                     </section>
-              </div>
-              <div>
-              </div>
+                </div>
+                <GlobalTrendsComponent globalTrends={globalTrends}/>
           </div>
         );
+    }
+
+    function LeftBar(){
+        return (
+            <div className={styles.leftBar}>
+                <p>Browse</p>
+                <p>Discover</p>
+                <p>My Library</p>
+                <p>Notifications</p>
+            </div>
+        )
+
     }
 
     return (
         <>
            <Navbar/>
-            <RightBar data={mostPlayedSongs}/>
+            <div className={styles.homePage}>
+                <LeftBar/>
+                <RightBar data={mostPlayedSongs}/>
+            </div>
         </>
     )
 }
