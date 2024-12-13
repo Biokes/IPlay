@@ -4,7 +4,8 @@ import { ChartData, UserData } from '@/interface/interfaces'
 
 const initialState: UserData = {
     topSongs: [],
-    lastDateUpdated:''
+    lastDateUpdated: '',
+    globalTrends: []
 }
 
 const songSLice = createSlice({
@@ -16,9 +17,11 @@ const songSLice = createSlice({
             },
         setLastDateUpdated(state, action: PayloadAction<string>) { 
             state.lastDateUpdated = action.payload;
+        },
+        setGlobalTrends(state, action: PayloadAction<ChartData[]>) { 
+            state.globalTrends = action.payload
         }
     }
-
 })
 
 export const {setTopSongs, setLastDateUpdated} = songSLice.actions;

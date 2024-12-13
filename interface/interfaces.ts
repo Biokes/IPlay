@@ -45,6 +45,7 @@ export interface ChartData {
     trackMetadata: TrackMetadata;
 }
 export interface UserData{
-    topSongs: ChartData[],
+    topSongs: ChartData[];
+    globalTrends: ChartData[];
     lastDateUpdated: string
 }
