@@ -144,7 +144,10 @@ export default function HomePage(props: { loading:boolean }) {
     }
     const componentsMapping: Mapper[] = [
         { text: "All", component: <RightBar data={topSongs} /> },
-        { text: "Browse", component: <Browse/> },
+        {
+            text: "Browse", component: <Browse firstComponent={<TrendsComponent data={globalTrends} leftText={"Global Trends"}
+                loading={isLoading} />} secondComponent={ <TrendsComponent data={suggestionData} leftText={"Global Chart"} loading={isLoading}/>} />
+        },
         { text: "Favourite", component: <></> },
     ]
 
