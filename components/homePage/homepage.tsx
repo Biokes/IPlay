@@ -8,7 +8,8 @@ import { useEffect} from 'react'
 import {ChartData} from '@/interface/interfaces'
 import styles from '@/styles/home.module.css';
 import {Mapper} from '@/interface/interfaces'
-import { useAppSelector } from '@/redux/store';
+import { useAppSelector, useAppDispatch } from '@/redux/store';
+import { saveSong } from "@/redux/songSlice"
 
 export default function HomePage(props: { loading:boolean }) {
     
@@ -55,6 +56,10 @@ export default function HomePage(props: { loading:boolean }) {
                 </div>
             );
         }
+        const save = (data: ChartData) => { 
+            const dispatch = useAppDispatch()
+            dispatch(saveSong(data))
+        }
 
         return (
             <div>
@@ -65,7 +70,9 @@ export default function HomePage(props: { loading:boolean }) {
                 <section className="flex justify-around items-center w-full md:px-[10px]">
                     {!loading ?
                             data.slice(0, 5).map((song, index) => (
-                            <section key={index} className={`${styles.mappedImag}`}>
+                                <section key={index} className={`${styles.mappedImag}`} onClick={() => {
+                                    save(song)
+                                }}>
                                 <div>
                                     <Image src={song.trackMetadata.displayImageUri} width={120} height={120} className="object-center object-cover"alt=""/>
                                 </div>
@@ -137,7 +144,7 @@ export default function HomePage(props: { loading:boolean }) {
     const componentsMapping: Mapper[] = [
         { text: "All", component: <RightBar data={topSongs} /> },
         { text: "Browse", component: <></> },
-        { text: "My Library", component: <></> },
+        { text: "Favourite", component: <></> },
     ]
 
     useMemo(() => {

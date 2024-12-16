@@ -48,7 +48,8 @@ export interface ChartData {
 export interface UserData{
     topSongs: ChartData[];
     globalTrends: ChartData[];
-    lastDateUpdated: string
+    lastDateUpdated: string;
+    clickedSong : ChartData | string
 }
 export interface Mapper { 
     text: string,

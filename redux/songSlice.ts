@@ -5,7 +5,8 @@ import { ChartData, UserData } from '@/interface/interfaces'
 const initialState: UserData = {
     topSongs: [],
     lastDateUpdated: '',
-    globalTrends: []
+    globalTrends: [],
+    clickedSong: ''
 }
 
 const songSLice = createSlice({
@@ -20,9 +21,12 @@ const songSLice = createSlice({
         },
         setGlobalTrends(state, action: PayloadAction<ChartData[]>) { 
             state.globalTrends = action.payload
+        },
+        saveSong(state, action: PayloadAction<ChartData>) { 
+            state.clickedSong = action.payload
         }
     }
 })
 
-export const {setTopSongs, setLastDateUpdated,setGlobalTrends} = songSLice.actions;
+export const {setTopSongs, setLastDateUpdated,setGlobalTrends, saveSong} = songSLice.actions;
 export default songSLice.reducer;
