@@ -1,4 +1,3 @@
-
 .mappedImag{
     @apply flex flex-col items-center justify-center py-[10px]
 }
@@ -14,14 +13,14 @@
 .homePage{
     @apply flex md:pl-[20px]
 }
-.leftBar> p{
-    @apply py-[10px] text-[20px] hover:bg-blue-400 hover:text-white px-[30px] mx-[5px] rounded-md hover:cursor-pointer
+.currentText{
+    @apply py-[10px] text-[20px]  hover:text-white px-[30px] mx-[5px] rounded-md hover:cursor-pointer
 }
 .rightBar{
-    @apply md:pl-[20px] md:px-0 pt-[20px] border-[1px] rounded-md border-white w-[100%] flex flex-col gap-[10px]
+    @apply  md:px-0 pt-[20px] border-[1px] rounded-md border-white w-[100%] flex flex-col gap-[10px]
 }
 .inputBar{
-    @apply ml-[10px] md:ml-0 border-[1px] border-white flex w-full md:w-[400px] rounded-[10px] overflow-hidden md:justify-end
+    @apply  md:ml-0 border-[1px] border-white flex w-[200px] md:w-[400px] rounded-[10px] overflow-hidden justify-end
 }
 .headers{
     @apply bg-gray-800 flex justify-between items-center px-[10px] md:px-[20px] h-[20px] md:h-[40px] border-b-white border-[1px]

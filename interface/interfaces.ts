@@ -1,3 +1,4 @@
+import React, { ReactNode } from 'react';
 export interface TrackData {
     id: number;
     streams: string;
@@ -48,4 +49,8 @@ export interface UserData{
     topSongs: ChartData[];
     globalTrends: ChartData[];
     lastDateUpdated: string
+}
+export interface Mapper { 
+    text: string,
+    component: ReactNode
 }

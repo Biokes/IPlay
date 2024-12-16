@@ -9,11 +9,10 @@ import { CircularProgress } from "@mui/material";
 export default function ReduxProvider({ children }: {children: React.ReactNode}) {
   const persistor = persistStore(store);
   const Loading = (
-    <div className='flex w-full h-full  justify-center items-center'>
-        <div>
+    <div className='flex flex-col w-[100vw] h-[100vh]  justify-center items-center'>
           <CircularProgress size={40} />
-        </div>
-=    </div>
+      <p className='text-[13px] md:text-[17px] py-[10px]' style={{fontFamily:'Dm sans'}}>Please wait...</p>
+    </div>
   )
 
   return (
