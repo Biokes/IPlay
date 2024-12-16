@@ -4,83 +4,30 @@ import PersonIcon from '@mui/icons-material/Person';
 import React, {useState, useMemo} from "react";
 import {CircularProgress} from "@mui/material"
 import Image from 'next/image';
+import { useEffect} from 'react'
 import {ChartData} from '@/interface/interfaces'
-import { useAppDispatch, useAppSelector} from "@/redux/store";
-import {setTopSongs, setGlobalTrends} from "@/redux/songSlice";
 import styles from '@/styles/home.module.css';
 import {Mapper} from '@/interface/interfaces'
+import { useAppSelector } from '@/redux/store';
 
-export default function HomePage() {
+export default function HomePage(props: { loading:boolean }) {
     
-    const [mostPlayedSongs, setMostPlayedSongs] = useState<ChartData[]>([])
-    const [isLoading, setLoading] = useState<boolean>(false);
+    const [topSongs, setTopSongs] = useState<ChartData[]>([])
     const isOnline = navigator.onLine;
-    const dispatch = useAppDispatch();
     const [globalTrends, setGlobalTrendsData] = useState<ChartData[]>([])
-    const topSongsPersisted = useAppSelector(state => state.Songs.topSongs)
-    const globalSongsPersisted = useAppSelector(state => state.Songs.globalTrends);
     const [rightComponent, setRightComponent] = useState<React.ReactNode>(<></>)
     const [suggestionData, setSuggestionData] = useState<ChartData[]>([])
-    const getGlobalTrends = async () => {
-        const url = 'https://spotify81.p.rapidapi.com/top_200_tracks?country=GLOBAL';
-        const options = {
-            method: 'GET',
-            headers: {
-                'x-rapidapi-key': '568118d0ecmsh434c99fc5aed6a5p113d8ajsn9f1059a2d88d',
-                'x-rapidapi-host': 'spotify81.p.rapidapi.com'
-            }
-        };
-
-        try {
-            if (navigator.onLine) {
-                if (!globalSongsPersisted || globalSongsPersisted.length === 0) {
-                    const response = await fetch(url, options);
-                    const result = await response.json();
-                    setGlobalTrendsData(result)
-                    dispatch(setGlobalTrends(globalTrends))
-                    console.log("fetch Data 1")
-                }
-            } else {
-                setMostPlayedSongs(topSongsPersisted)
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    const getMostPlayedTracks = async () => {
-        const url = 'https://spotify81.p.rapidapi.com/top_200_tracks?country=NG';
-        const options = {
-            method: 'GET',
-            headers: {
-                'x-rapidapi-key': '568118d0ecmsh434c99fc5aed6a5p113d8ajsn9f1059a2d88d',
-                'x-rapidapi-host': 'spotify81.p.rapidapi.com'
-            }
-        };
-        try {
-            setLoading(true)
-            if (navigator.onLine) {
-                if (!topSongsPersisted || topSongsPersisted.length === 0) {
-                    const response = await fetch(url, options);
-                    const result = await response.json();
-                    setMostPlayedSongs(result);
-                    dispatch(setTopSongs(result));
-                    console.log("fetch Data 2")
-                }
-            } else {
-                setMostPlayedSongs(topSongsPersisted)
-            }
-        } catch (error) {
-            console.error("Cause of Error: ", error);
-            if (error instanceof Error) {
-            }
-        } finally {
-            setLoading(false);
-        }
-    }
+    const [isLoading, setLoading] = useState<boolean>(props.loading)
     const suggestion = async () => {
         setSuggestionData([])
     }
-
+    useEffect(() => { 
+        setTopSongs(useAppSelector((state)=> state.Songs.topSongs))
+        setGlobalTrendsData(useAppSelector((state) => state.Songs.topSongs))
+        setLoading(isLoading);
+        console.log("persisted globaTrends : ",globalTrends)
+        console.log("persisted topSongs : ",topSongs)
+    },[])
     const Navbar = () => {
         return (
             <div className={'flex items-center justify-between bg-blue-500 p-[5px_10%] rounded-md'}>
@@ -100,52 +47,42 @@ export default function HomePage() {
         )
     }
 
-    function TrendsComponent(args: { data: ChartData[], leftText: string }) {
+    const TrendsComponent = ({ data, leftText, loading }: { data: ChartData[]; leftText: string; loading:boolean}) => {
+        if (!data || data.length === 0) {
+            return (
+                <div className="h-[120px] flex items-center justify-center w-full">
+                    <p>Sorry, No Data Available</p>
+                </div>
+            );
+        }
+
         return (
-            <div className={''}>
+            <div>
                 <div className={styles.headers}>
-                    <p>{args.leftText}</p>
+                    <p>{leftText}</p>
                     <p>see all</p>
                 </div>
-                <section className={`flex justify-around items-center w-full md:px-[10px]`}>
-                    {isOnline ?
-                        <>
-                            {!isLoading ?
-                                <>
-                                    {args?
-                                        args.data.slice(0, 5).map((data, index) => (
-                                            <section key={index} className={`${styles.mappedImag}`}>
-                                                <div>
-                                                    <Image src={data.trackMetadata.displayImageUri} width={120} height={120} className={' object-center object-cover'} alt='' />
-                                                </div>
-                                                <p>{data.trackMetadata.artists[0].name}</p>
-                                                <p>{data.trackMetadata.trackName}</p>
-                                            </section>
-                                        ))
-                                        :
-                                        <div className={'h-[120px] flex items-center justify-center w-full'}>
-                                            <p>Something went wrong</p>
-                                        </div>
-                                    }
-
-                                </>
-                                :
-                                <div className={'h-[150px] w-full flex justify-center items-center bg-gray-800'}>
-                                    <div>
-                                        <CircularProgress size={40} />
-                                    </div>
+                <section className="flex justify-around items-center w-full md:px-[10px]">
+                    {!loading ?
+                            data.slice(0, 5).map((song, index) => (
+                            <section key={index} className={`${styles.mappedImag}`}>
+                                <div>
+                                    <Image src={song.trackMetadata.displayImageUri} width={120} height={120} className="object-center object-cover"alt=""/>
                                 </div>
-                            }
-                        </>
-                        :
-                        <div className={'h-[120px] flex items-center justify-center w-full'}>
-                            <p>Sorry, No Data Available </p>
-                        </div>
-                    }
+                                <p>{song.trackMetadata.artists[0].name}</p>
+                                <p>{song.trackMetadata.trackName}</p>
+                            </section>
+                            )) :
+                            <div className={'h-[150px] w-full flex justify-center items-center bg-gray-800'}>
+                                <div>
+                                    <CircularProgress size={40} />
+                                </div>
+                            </div>
+                }
                 </section>
             </div>
-        )
-    }
+        );
+    };
 
     function RightBar(args: { data: ChartData[] }) {
         return (
@@ -158,7 +95,7 @@ export default function HomePage() {
                     <section className={`flex justify-around items-center w-full md:py-[10px] md:px-[10px]`}>
                         {isOnline ?
                             <>
-                                {!isLoading ?
+                                {!props.loading ?
                                     <>
                                         {args?
                                             args.data.slice(0, 5).map((data, index) => (
@@ -192,22 +129,20 @@ export default function HomePage() {
                         }
                     </section>
                 </div>
-                <TrendsComponent data={globalTrends} leftText={"Global Trends"} />
-                <TrendsComponent data={suggestionData} leftText={"Global Chart"} />
+                <TrendsComponent data={globalTrends} leftText={"Global Trends"} loading={isLoading} />
+                <TrendsComponent data={suggestionData} leftText={"Global Chart"} loading={isLoading} />
             </div>
         );
     }
     const componentsMapping: Mapper[] = [
-        { text: "All", component: <RightBar data={mostPlayedSongs} /> },
+        { text: "All", component: <RightBar data={topSongs} /> },
         { text: "Browse", component: <></> },
         { text: "My Library", component: <></> },
     ]
 
     useMemo(() => {
         suggestion()
-        getGlobalTrends();
-        getMostPlayedTracks()
-        setRightComponent(<RightBar data={mostPlayedSongs} />);
+        setRightComponent(<RightBar data={topSongs} />);
     }, [])
     
     function LeftBar() {
@@ -233,3 +168,44 @@ export default function HomePage() {
         </>
     )
 }
+   // function TrendsComponent({data, leftText}: { data: ChartData[], leftText: string }) {
+    //     return (
+    //         <div className={''}>
+    //             <div className={styles.headers}>
+    //                 <p>{args.leftText}</p>
+    //                 <p>see all</p>
+    //             </div>
+    //             <section className={`flex justify-around items-center w-full md:px-[10px]`}>
+    //                 {isOnline ?
+    //                     <>  
+    //                         {!args ?
+    //                             <>
+    //                                 {args?
+    //                                     args.data.slice(0, 5).map((data, index) => (
+    //                                         <section key={index} className={`${styles.mappedImag}`}>
+    //                                             <div>
+    //                                                 <Image src={data.trackMetadata.displayImageUri} width={120} height={120} className={' object-center object-cover'} alt='' />
+    //                                             </div>
+    //                                             <p>{data.trackMetadata.artists[0].name}</p>
+    //                                             <p>{data.trackMetadata.trackName}</p>
+    //                                         </section>
+    //                                     ))
+    //                                     :
+    //                                     <div className={'h-[120px] flex items-center justify-center w-full'}>
+    //                                         <p>Something went wrong</p>
+    //                                     </div>
+    //                                 }
+    //                             </>
+    //                             :
+    //                          
+    //                         }
+    //                     </>
+    //                     :
+    //                     <div className={'h-[120px] flex items-center justify-center w-full'}>
+    //                         <p>Sorry, No Data Available </p>
+    //                     </div>
+    //                 }
+    //             </section>
+    //         </div>
+    //     )
+    // }
