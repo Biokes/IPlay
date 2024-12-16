@@ -1,7 +1,7 @@
 'use client'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PersonIcon from '@mui/icons-material/Person';
-import React, {useState, useEffect} from "react";
+import React, {useState, useMemo} from "react";
 import {CircularProgress} from "@mui/material"
 import Image from 'next/image';
 import {ChartData} from '@/interface/interfaces'
@@ -17,8 +17,8 @@ export default function HomePage() {
     const isOnline = navigator.onLine;
     const dispatch = useAppDispatch();
     const [globalTrends, setGlobalTrendsData] = useState<ChartData[]>([])
-    const topSongsPersisted = useAppSelector(state => state.songs.topSongs)
-    const globalSongsPersisted = useAppSelector(state => state.songs.globalTrends);
+    const topSongsPersisted = useAppSelector(state => state.Songs.topSongs)
+    const globalSongsPersisted = useAppSelector(state => state.Songs.globalTrends);
     const [rightComponent, setRightComponent] = useState<React.ReactNode>(<></>)
     const [suggestionData, setSuggestionData] = useState<ChartData[]>([])
     const getGlobalTrends = async () => {
@@ -26,7 +26,7 @@ export default function HomePage() {
         const options = {
             method: 'GET',
             headers: {
-                'x-rapidapi-key': 'febfd66cf9msh276ca2c333c55b2p17a072jsnb411682e032e',
+                'x-rapidapi-key': '568118d0ecmsh434c99fc5aed6a5p113d8ajsn9f1059a2d88d',
                 'x-rapidapi-host': 'spotify81.p.rapidapi.com'
             }
         };
@@ -52,7 +52,7 @@ export default function HomePage() {
         const options = {
             method: 'GET',
             headers: {
-                'x-rapidapi-key': 'febfd66cf9msh276ca2c333c55b2p17a072jsnb411682e032e',
+                'x-rapidapi-key': '568118d0ecmsh434c99fc5aed6a5p113d8ajsn9f1059a2d88d',
                 'x-rapidapi-host': 'spotify81.p.rapidapi.com'
             }
         };
@@ -80,7 +80,6 @@ export default function HomePage() {
     const suggestion = async () => {
         setSuggestionData([])
     }
-
 
     const Navbar = () => {
         return (
@@ -113,7 +112,7 @@ export default function HomePage() {
                         <>
                             {!isLoading ?
                                 <>
-                                    {
+                                    {args?
                                         args.data.slice(0, 5).map((data, index) => (
                                             <section key={index} className={`${styles.mappedImag}`}>
                                                 <div>
@@ -123,6 +122,10 @@ export default function HomePage() {
                                                 <p>{data.trackMetadata.trackName}</p>
                                             </section>
                                         ))
+                                        :
+                                        <div className={'h-[120px] flex items-center justify-center w-full'}>
+                                            <p>Something went wrong</p>
+                                        </div>
                                     }
 
                                 </>
@@ -157,16 +160,20 @@ export default function HomePage() {
                             <>
                                 {!isLoading ?
                                     <>
-                                        {
+                                        {args?
                                             args.data.slice(0, 5).map((data, index) => (
                                                 <section key={index} className={`${styles.mappedImag}`}>
                                                     <div>
                                                         <Image src={data.trackMetadata.displayImageUri} width={120} height={120} className={' object-center object-cover'} alt='' />
                                                     </div>
                                                     <p>{data.trackMetadata.artists[0].name}</p>
-                                                    <p className={styles.trackName}>{data.trackMetadata.trackName}</p>
+                                                    <p>{data.trackMetadata.trackName}</p>
                                                 </section>
                                             ))
+                                            :
+                                            <div className={'h-[120px] flex items-center justify-center w-full'}>
+                                                <p>Something went wrong</p>
+                                            </div>
                                         }
                                     
                                     </>
@@ -196,10 +203,10 @@ export default function HomePage() {
         { text: "My Library", component: <></> },
     ]
 
-    useEffect(() => {
+    useMemo(() => {
+        suggestion()
         getGlobalTrends();
         getMostPlayedTracks()
-        suggestion()
         setRightComponent(<RightBar data={mostPlayedSongs} />);
     }, [])
     
@@ -207,7 +214,7 @@ export default function HomePage() {
         return (
             <div className={styles.leftBar}>
                 {componentsMapping.map((data, index)=>(
-                    <p key={index} className={`${styles.currentText} ${rightComponent=== data.component ? "hover:bg-blue-400":"bg-blue-400" }`} onClick={()=>setRightComponent(data.component)}>{data.text}</p>
+                    <p key={index} className={`${styles.currentText} ${rightComponent !== data.component ? "hover:bg-blue-400":"bg-blue-400" }`} onClick={()=>setRightComponent(data.component)}>{data.text}</p>
                 ))
                 }
                

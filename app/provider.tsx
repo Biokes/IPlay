@@ -2,12 +2,11 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
-import { persistStore } from "redux-persist";
+import { persistor } from "@/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { CircularProgress } from "@mui/material";
 
 export default function ReduxProvider({ children }: {children: React.ReactNode}) {
-  const persistor = persistStore(store);
   const Loading = (
     <div className='flex flex-col w-[100vw] h-[100vh]  justify-center items-center'>
           <CircularProgress size={40} />
