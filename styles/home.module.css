@@ -8,7 +8,7 @@
     @apply text-[10px] md:text-[15px] md:font-[720] truncate max-w-[50px] md:max-w-[100px]
 }
 .leftBar{
-    @apply hidden md:flex md:flex-col h-[100%] md:w-[20%] md:py-[10px] md:ml-[10px] pt-[40px]
+    @apply hidden md:flex md:flex-col h-[100%] md:w-[20%] md:py-[10px] md:ml-[10px] pt-[40px] gap-[20px]
 }
 .homePage{
     @apply flex md:pl-[20px]
