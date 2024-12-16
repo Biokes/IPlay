@@ -10,6 +10,7 @@ import styles from '@/styles/home.module.css';
 import {Mapper} from '@/interface/interfaces'
 import { useAppSelector, useAppDispatch } from '@/redux/store';
 import { saveSong } from "@/redux/songSlice"
+import Browse from './browse';
 
 export default function HomePage(props: { loading:boolean }) {
     
@@ -143,7 +144,7 @@ export default function HomePage(props: { loading:boolean }) {
     }
     const componentsMapping: Mapper[] = [
         { text: "All", component: <RightBar data={topSongs} /> },
-        { text: "Browse", component: <></> },
+        { text: "Browse", component: <Browse/> },
         { text: "Favourite", component: <></> },
     ]
 
