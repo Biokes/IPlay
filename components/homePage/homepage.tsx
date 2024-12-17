@@ -23,13 +23,14 @@ export default function HomePage(props: { loading:boolean }) {
     const suggestion = async () => {
         setSuggestionData([])
     }
+    const globalData = useAppSelector((state) => state.Songs.globalTrends);
+    const topData = useAppSelector((state)=> state.Songs.topSongs)
     useEffect(() => { 
-        setTopSongs(useAppSelector((state)=> state.Songs.topSongs))
-        setGlobalTrendsData(useAppSelector((state) => state.Songs.topSongs))
+        setTopSongs(topData)
+        setGlobalTrendsData(globalData)
         setLoading(isLoading);
-        console.log("persisted globaTrends : ",globalTrends)
-        console.log("persisted topSongs : ",topSongs)
-    },[])
+    }, [])
+    const dispatch = useAppDispatch()
     const Navbar = () => {
         return (
             <div className={'flex items-center justify-between bg-blue-500 p-[5px_10%] rounded-md'}>
@@ -58,7 +59,6 @@ export default function HomePage(props: { loading:boolean }) {
             );
         }
         const save = (data: ChartData) => { 
-            const dispatch = useAppDispatch()
             dispatch(saveSong(data))
         }
 

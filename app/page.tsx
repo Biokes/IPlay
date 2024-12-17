@@ -35,7 +35,9 @@ export default function Home() {
         }
       }
     } catch (error) {
-      
+      if (error instanceof Error) {
+        console.log(error.message)
+      }
     } finally { 
       setLoading(!loading)
     }
@@ -61,8 +63,8 @@ const getMostPlayedTracks = async () => {
             }
         } 
     } catch (error) {
-        console.error("Cause of Error: ", error);
-        if (error instanceof Error) {
+      if (error instanceof Error) {
+          console.log(error.message)
         }
     } finally {
         setLoading(false);
