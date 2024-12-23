@@ -4,33 +4,35 @@ import PersonIcon from '@mui/icons-material/Person';
 import React, {useState, useMemo} from "react";
 import {CircularProgress} from "@mui/material"
 import Image from 'next/image';
-import { useEffect} from 'react'
 import {ChartData} from '@/interface/interfaces'
 import styles from '@/styles/home.module.css';
 import {Mapper} from '@/interface/interfaces'
 import { useAppSelector, useAppDispatch } from '@/redux/store';
-import { saveSong } from "@/redux/songSlice"
-import Browse from './browse';
+import { saveSong } from "@/redux/slices/songSlice"
+import EmptyComponent from "@/components/commons/emptyComponent";
 
 export default function HomePage(props: { loading:boolean }) {
-    
     const [topSongs, setTopSongs] = useState<ChartData[]>([])
-    const isOnline = navigator.onLine;
     const [globalTrends, setGlobalTrendsData] = useState<ChartData[]>([])
     const [rightComponent, setRightComponent] = useState<React.ReactNode>(<></>)
     const [suggestionData, setSuggestionData] = useState<ChartData[]>([])
-    const [isLoading, setLoading] = useState<boolean>(props.loading)
+    const dispatch = useAppDispatch()
+
     const suggestion = async () => {
         setSuggestionData([])
     }
+    const username = useAppSelector((state)=>state.user.username)
     const globalData = useAppSelector((state) => state.Songs.globalTrends);
     const topData = useAppSelector((state)=> state.Songs.topSongs)
-    useEffect(() => { 
-        setTopSongs(topData)
-        setGlobalTrendsData(globalData)
-        setLoading(isLoading);
-    }, [])
-    const dispatch = useAppDispatch()
+    useMemo(() => {
+        if (!globalData || globalData.length !== 0) {
+            setGlobalTrendsData(globalData);
+        }
+        if(!topData || topData.length !== 0) {
+            setTopSongs(topData)
+        }
+    }, [globalData, topData]);
+
     const Navbar = () => {
         return (
             <div className={'flex items-center justify-between bg-blue-500 p-[5px_10%] rounded-md'}>
@@ -40,23 +42,19 @@ export default function HomePage(props: { loading:boolean }) {
                     </div>
                     <p className={'text-[20px]'}>IPlay</p>
                 </div>
-                <div className={'bg-white rounded-2xl flex items-center px-[10px] hover:cursor-pointer'}>
+                <button className={'bg-white rounded-2xl flex items-center px-[10px] hover:cursor-pointer'}>
                     <div className={'p-[5px]'}>
                         <PersonIcon className={'text-black'} />
                     </div>
-                    <p className={'text-blue-500'}>{'no data'}</p>
-                </div>
+                    <p className={'text-blue-500'}>{ !username? "Login" : username}</p>
+                </button>
             </div>
         )
     }
 
     const TrendsComponent = ({ data, leftText, loading }: { data: ChartData[]; leftText: string; loading:boolean}) => {
         if (!data || data.length === 0) {
-            return (
-                <div className="h-[120px] flex items-center justify-center w-full">
-                    <p>Sorry, No Data Available</p>
-                </div>
-            );
+            return <EmptyComponent/>
         }
         const save = (data: ChartData) => { 
             dispatch(saveSong(data))
@@ -69,16 +67,14 @@ export default function HomePage(props: { loading:boolean }) {
                     <p>see all</p>
                 </div>
                 <section className="flex justify-around items-center w-full md:px-[10px]">
-                    {!loading ?
+                    {!loading?
                             data.slice(0, 5).map((song, index) => (
-                                <section key={index} className={`${styles.mappedImag}`} onClick={() => {
-                                    save(song)
-                                }}>
-                                <div>
-                                    <Image src={song.trackMetadata.displayImageUri} width={120} height={120} className="object-center object-cover"alt=""/>
-                                </div>
-                                <p>{song.trackMetadata.artists[0].name}</p>
-                                <p>{song.trackMetadata.trackName}</p>
+                                <section key={index} className={`${styles.mappedImag}`} onClick={()=>{save(song)}}>
+                                    <div>
+                                        <Image src={song.trackMetadata.displayImageUri} width={120} height={120} className="object-center object-cover" alt=""/>
+                                    </div>
+                                    <p>{song.trackMetadata.artists[0].name}</p>
+                                    <p>{song.trackMetadata.trackName}</p>
                             </section>
                             )) :
                             <div className={'h-[150px] w-full flex justify-center items-center bg-gray-800'}>
@@ -101,60 +97,56 @@ export default function HomePage(props: { loading:boolean }) {
                         <p>see all</p>
                     </div>
                     <section className={`flex justify-around items-center w-full md:py-[10px] md:px-[10px]`}>
-                        {isOnline ?
+                        {props.loading ?
                             <>
-                                {!props.loading ?
+                                {args ?
                                     <>
-                                        {args?
+                                        {args ?
                                             args.data.slice(0, 5).map((data, index) => (
                                                 <section key={index} className={`${styles.mappedImag}`}>
                                                     <div>
-                                                        <Image src={data.trackMetadata.displayImageUri} width={120} height={120} className={' object-center object-cover'} alt='' />
+                                                        <Image src={data.trackMetadata.displayImageUri} width={120}
+                                                               height={120} className={' object-center object-cover'}
+                                                               alt=''/>
                                                     </div>
                                                     <p>{data.trackMetadata.artists[0].name}</p>
                                                     <p>{data.trackMetadata.trackName}</p>
                                                 </section>
                                             ))
                                             :
-                                            <div className={'h-[120px] flex items-center justify-center w-full'}>
-                                                <p>Something went wrong</p>
+                                            <div
+                                                className={'h-[150px] w-full flex justify-center items-center bg-gray-800'}>
+                                                <div>
+                                                    <CircularProgress size={40}/>
+                                                </div>
                                             </div>
                                         }
-                                    
+
                                     </>
                                     :
-                                    <div className={'h-[150px] w-full flex justify-center items-center bg-gray-800'}>
-                                        <div>
-                                            <CircularProgress size={40} />
-                                        </div>
-                                    </div>
+                                    <EmptyComponent/>
                                 }
                             </>
                             :
-                            <div className={'h-[120px] flex items-center justify-center w-full md:px-[20px]'}>
-                                <p>Sorry, No Data Available </p>
-                            </div>
+                            <EmptyComponent/>
                         }
                     </section>
                 </div>
-                <TrendsComponent data={globalTrends} leftText={"Global Trends"} loading={isLoading} />
-                <TrendsComponent data={suggestionData} leftText={"Global Chart"} loading={isLoading} />
+                <TrendsComponent data={globalTrends} leftText={"Global Trends"} loading={props.loading}/>
+                <TrendsComponent data={suggestionData} leftText={"Global Chart"} loading={props.loading} />
             </div>
         );
     }
     const componentsMapping: Mapper[] = [
-        { text: "All", component: <RightBar data={topSongs} /> },
-        {
-            text: "Browse", component: <Browse firstComponent={<TrendsComponent data={globalTrends} leftText={"Global Trends"}
-                loading={isLoading} />} secondComponent={ <TrendsComponent data={suggestionData} leftText={"Global Chart"} loading={isLoading}/>} />
-        },
+        { text: "Home", component: <RightBar data={topSongs}/> },
+        {text: "Browse", component: <></>},
         { text: "Favourite", component: <></> },
     ]
 
     useMemo(() => {
         suggestion()
         setRightComponent(<RightBar data={topSongs} />);
-    }, [])
+    }, [topSongs])
     
     function LeftBar() {
         return (
@@ -168,7 +160,6 @@ export default function HomePage(props: { loading:boolean }) {
         )
 
     }
-
     return (
         <>
            <Navbar/>
