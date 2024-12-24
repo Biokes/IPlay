@@ -49,7 +49,8 @@ export interface UserData{
     topSongs: ChartData[];
     globalTrends: ChartData[];
     lastDateUpdated: string;
-    clickedSong : ChartData | string
+    clickedSong : ChartData | string,
+    selectedSongUrl: string
 }
 export interface Mapper { 
     text: string,

@@ -3,7 +3,7 @@ import HomePage from "@/components/homePage/homepage";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { setGlobalTrends, setTopSongs } from "@/redux/slices/songSlice";
 import { ChartData } from "@/interface/interfaces";
-import {useMemo, useState} from "react"
+import {useEffect , useState} from "react"
 
 export default function Home() {
   const dispatch = useAppDispatch()
@@ -69,7 +69,7 @@ const getMostPlayedTracks = async () => {
         setLoading(false);
     }
 }
-    useMemo(() => {
+    useEffect(() => {
         getGlobalTrends();
         getMostPlayedTracks();
   },[])

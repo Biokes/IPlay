@@ -10,6 +10,7 @@ import {Mapper} from '@/interface/interfaces'
 import { useAppSelector, useAppDispatch } from '@/redux/store';
 import { saveSong } from "@/redux/slices/songSlice"
 import EmptyComponent from "@/components/commons/emptyComponent";
+import MusicPlayer from "@/components/commons/MusicPlayer";
 
 export default function HomePage(props: { loading:boolean }) {
     const [topSongs, setTopSongs] = useState<ChartData[]>([])
@@ -161,12 +162,15 @@ export default function HomePage(props: { loading:boolean }) {
 
     }
     return (
-        <>
-           <Navbar/>
-            <div className={styles.homePage}>
-                <LeftBar />
-                {rightComponent}
+        <div className={'h-[100vh] flex  flex-col justify-between'}>
+            <div className={'relative'}>
+                <Navbar/>
+                <div className={styles.homePage}>
+                    <LeftBar />
+                    {rightComponent}
+                </div>
             </div>
-        </>
+            <MusicPlayer/>
+        </div>
     )
 }

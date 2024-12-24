@@ -6,7 +6,8 @@ const initialState: UserData = {
     topSongs: [],
     lastDateUpdated: '',
     globalTrends: [],
-    clickedSong: ''
+    clickedSong: '',
+    selectedSongUrl:''
 }
 
 const songSLice = createSlice({
@@ -24,9 +25,15 @@ const songSLice = createSlice({
         },
         saveSong(state, action: PayloadAction<ChartData>) { 
             state.clickedSong = action.payload
+        },
+        setSelectedSongUrl(state,action:PayloadAction<string>){
+
+            state.selectedSongUrl = action.payload;
         }
     }
 })
 
-export const {setTopSongs, setLastDateUpdated,setGlobalTrends, saveSong} = songSLice.actions;
+export const {setTopSongs, setSelectedSongUrl
+            ,setLastDateUpdated,setGlobalTrends,
+            saveSong} = songSLice.actions;
 export default songSLice.reducer;
