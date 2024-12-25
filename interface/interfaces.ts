@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import {Dispatch, ReactNode, RefObject, SetStateAction} from 'react';
 export interface TrackData {
     id: number;
     streams: string;
@@ -58,4 +58,9 @@ export interface Mapper {
 }
 export interface User{
     username:string
+}
+export interface PausePlayArgs {
+    ref: RefObject<HTMLAudioElement | null>;
+    isPlaying: boolean;
+    setter: Dispatch<SetStateAction<boolean>>;
 }
