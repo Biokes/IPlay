@@ -4,7 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import React, {useState, useMemo} from "react";
 import {CircularProgress} from "@mui/material"
 import Image from 'next/image';
-import {ChartData} from '@/interface/interfaces'
+import {ChartData, TrackMetadata} from '@/interface/interfaces'
 import styles from '@/styles/home.module.css';
 import {Mapper} from '@/interface/interfaces'
 import { useAppSelector, useAppDispatch } from '@/redux/store';
@@ -18,6 +18,12 @@ export default function HomePage(props: { loading:boolean }) {
     const [rightComponent, setRightComponent] = useState<React.ReactNode>(<></>)
     const [suggestionData, setSuggestionData] = useState<ChartData[]>([])
     const dispatch = useAppDispatch()
+    const [defaultSongData, setDefaultSongMetaData] = useState<TrackMetadata>({
+        trackName:'',
+        trackUri:'http://localhost/',
+        displayImageUri:'',
+        artists:[]
+    })
 
     const suggestion = async () => {
         setSuggestionData([])
@@ -170,7 +176,9 @@ export default function HomePage(props: { loading:boolean }) {
                     {rightComponent}
                 </div>
             </div>
-            <MusicPlayer/>
+            <MusicPlayer displayImageUri={defaultSongData.displayImageUri} artists={defaultSongData.artists}
+                         trackName={defaultSongData.trackName} trackUri={defaultSongData.trackUri}
+            />
         </div>
     )
 }
