@@ -4,7 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import React, {useState, useMemo} from "react";
 import {CircularProgress} from "@mui/material"
 import Image from 'next/image';
-import {ChartData, TrackMetadata} from '@/interface/interfaces'
+import {ChartData,} from '@/interface/interfaces'
 import styles from '@/styles/home.module.css';
 import {Mapper} from '@/interface/interfaces'
 import { useAppSelector, useAppDispatch } from '@/redux/store';
@@ -12,19 +12,12 @@ import { saveSong } from "@/redux/slices/songSlice"
 import EmptyComponent from "@/components/commons/emptyComponent";
 import MusicPlayer from "@/components/commons/MusicPlayer";
 
-export default function HomePage(props: { loading:boolean }) {
+export default function HomePage() {
     const [topSongs, setTopSongs] = useState<ChartData[]>([])
     const [globalTrends, setGlobalTrendsData] = useState<ChartData[]>([])
     const [rightComponent, setRightComponent] = useState<React.ReactNode>(<></>)
     const [suggestionData, setSuggestionData] = useState<ChartData[]>([])
     const dispatch = useAppDispatch()
-    const [defaultSongData, setDefaultSongMetaData] = useState<TrackMetadata>({
-        trackName:'',
-        trackUri:'http://localhost/',
-        displayImageUri:'',
-        artists:[]
-    })
-
     const suggestion = async () => {
         setSuggestionData([])
     }
@@ -59,7 +52,7 @@ export default function HomePage(props: { loading:boolean }) {
         )
     }
 
-    const TrendsComponent = ({ data, leftText, loading }: { data: ChartData[]; leftText: string; loading:boolean}) => {
+    const TrendsComponent = ({ data, leftText }: { data: ChartData[]; leftText: string}) => {
         if (!data || data.length === 0) {
             return <EmptyComponent/>
         }
@@ -74,7 +67,7 @@ export default function HomePage(props: { loading:boolean }) {
                     <p>see all</p>
                 </div>
                 <section className="flex justify-around items-center w-full md:px-[10px]">
-                    {!loading?
+                    {data?
                             data.slice(0, 5).map((song, index) => (
                                 <section key={index} className={`${styles.mappedImag}`} onClick={()=>{save(song)}}>
                                     <div>
@@ -104,43 +97,37 @@ export default function HomePage(props: { loading:boolean }) {
                         <p>see all</p>
                     </div>
                     <section className={`flex justify-around items-center w-full md:py-[10px] md:px-[10px]`}>
-                        {props.loading ?
+                        {args ?
                             <>
                                 {args ?
-                                    <>
-                                        {args ?
-                                            args.data.slice(0, 5).map((data, index) => (
-                                                <section key={index} className={`${styles.mappedImag}`}>
-                                                    <div>
-                                                        <Image src={data.trackMetadata.displayImageUri} width={120}
-                                                               height={120} className={' object-center object-cover'}
-                                                               alt=''/>
-                                                    </div>
-                                                    <p>{data.trackMetadata.artists[0].name}</p>
-                                                    <p>{data.trackMetadata.trackName}</p>
-                                                </section>
-                                            ))
-                                            :
-                                            <div
-                                                className={'h-[150px] w-full flex justify-center items-center bg-gray-800'}>
-                                                <div>
-                                                    <CircularProgress size={40}/>
-                                                </div>
+                                    args.data.slice(0, 5).map((data, index) => (
+                                        <section key={index} className={`${styles.mappedImag}`}>
+                                            <div>
+                                                <Image src={data.trackMetadata.displayImageUri} width={120}
+                                                       height={120} className={' object-center object-cover'}
+                                                       alt=''/>
                                             </div>
-                                        }
-
-                                    </>
+                                            <p>{data.trackMetadata.artists[0].name}</p>
+                                            <p>{data.trackMetadata.trackName}</p>
+                                        </section>
+                                    ))
                                     :
-                                    <EmptyComponent/>
+                                    <div
+                                        className={'h-[150px] w-full flex justify-center items-center bg-gray-800'}>
+                                        <div>
+                                            <CircularProgress size={40}/>
+                                        </div>
+                                    </div>
                                 }
+
                             </>
                             :
                             <EmptyComponent/>
                         }
                     </section>
                 </div>
-                <TrendsComponent data={globalTrends} leftText={"Global Trends"} loading={props.loading}/>
-                <TrendsComponent data={suggestionData} leftText={"Global Chart"} loading={props.loading} />
+                <TrendsComponent data={globalTrends} leftText={"Nigeria Chart"}/>
+                <TrendsComponent data={suggestionData} leftText={"Global Chart"}/>
             </div>
         );
     }
@@ -159,7 +146,9 @@ export default function HomePage(props: { loading:boolean }) {
         return (
             <div className={styles.leftBar}>
                 {componentsMapping.map((data, index)=>(
-                    <p key={index} className={`${styles.currentText} ${rightComponent !== data.component ? "hover:bg-blue-400":"bg-blue-400" }`} onClick={()=>setRightComponent(data.component)}>{data.text}</p>
+                    <p key={index} className={`${styles.currentText} 
+                        ${rightComponent !== data.component ? "hover:bg-blue-400":"bg-blue-400" }`}
+                        onClick={()=>setRightComponent(data.component)}>{data.text}</p>
                 ))
                 }
                
@@ -176,8 +165,9 @@ export default function HomePage(props: { loading:boolean }) {
                     {rightComponent}
                 </div>
             </div>
-            <MusicPlayer displayImageUri={defaultSongData.displayImageUri} artists={defaultSongData.artists}
-                         trackName={defaultSongData.trackName} trackUri={defaultSongData.trackUri}
+            <MusicPlayer
+                displayImageUri={'defaultSongData.displayImageUri'} artists={[]}
+                         trackName={'defaultSongData.trackName'} trackUri={'defaultSongData.trackUri'}
             />
         </div>
     )

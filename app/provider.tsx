@@ -2,7 +2,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
-import { persistor } from "@/redux/store";
+import { persist } from "@/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { CircularProgress } from "@mui/material";
 
@@ -14,9 +14,10 @@ export default function ReduxProvider({ children }: {children: React.ReactNode})
     </div>
   )
 
+
   return (
     <Provider store={store}>
-      <PersistGate loading={Loading} persistor={persistor}>
+      <PersistGate loading={Loading} persistor={persist}>
         {children}
       </PersistGate>
     </Provider>

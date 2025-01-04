@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import songSlice from '@/redux/slices/songSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import userSlice from "@/redux/slices/userSlice";
+import snackBarSlice from "@/redux/slices/snackBarSlice";
 
 const persistConfig = {
   key: 'song_root',
@@ -12,7 +13,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  Songs: songSlice, user: userSlice
+  Songs: songSlice, user: userSlice,snackBarSlice: snackBarSlice
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
@@ -24,7 +25,7 @@ export const store = configureStore({
       },
     }),
 });
-export const persistor = persistStore(store);
+export const persist = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
