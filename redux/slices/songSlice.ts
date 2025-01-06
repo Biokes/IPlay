@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import { ChartData, UserData } from '@/interface/interfaces'
+import { Song, UserData } from '@/interface/interfaces'
 
 
 const initialState: UserData = {
@@ -14,16 +14,16 @@ const songSLice = createSlice({
     name:'song',
     initialState,
     reducers:{
-        setLocalTrends(state, action: PayloadAction<ChartData[]>) {
+        setLocalTrends(state, action: PayloadAction<Song[]>) {
                 state.topSongs = action.payload;
             },
         setLastDateUpdated(state, action: PayloadAction<string>) { 
             state.lastDateUpdated = action.payload;
         },
-        setGlobalTrends(state, action: PayloadAction<ChartData[]>) { 
+        setGlobalTrends(state, action: PayloadAction<Song[]>) {
             state.globalTrends = action.payload
         },
-        saveSong(state, action: PayloadAction<ChartData>) { 
+        saveSong(state, action: PayloadAction<Song>) {
             state.clickedSong = action.payload
         },
         setSelectedSongUrl(state,action:PayloadAction<string>){

@@ -40,16 +40,16 @@ export interface ChartEntryData {
     entryDate: string;
 }
 
-export interface ChartData {
+export interface Song {
     chartEntryData: ChartEntryData;
     missingRequiredFields: boolean;
     trackMetadata: TrackMetadata;
 }
 export interface UserData{
-    topSongs: ChartData[];
-    globalTrends: ChartData[];
+    topSongs: Song[];
+    globalTrends: Song[];
     lastDateUpdated: string;
-    clickedSong : ChartData | string,
+    clickedSong : Song | string,
     selectedSongUrl: string
 }
 export interface Mapper { 

@@ -4,7 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import React, {useState, useMemo} from "react";
 import {CircularProgress} from "@mui/material"
 import Image from 'next/image';
-import {ChartData,} from '@/interface/interfaces'
+import {Song,} from '@/interface/interfaces'
 import styles from '@/styles/home.module.css';
 import {Mapper} from '@/interface/interfaces'
 import { useAppSelector, useAppDispatch } from '@/redux/store';
@@ -13,8 +13,8 @@ import EmptyComponent from "@/components/commons/emptyComponent";
 import MusicPlayer from "@/components/commons/MusicPlayer";
 
 export default function HomePage() {
-    const [topSongs, setTopSongs] = useState<ChartData[]>([])
-    const [globalTrends, setGlobalTrendsData] = useState<ChartData[]>([])
+    const [topSongs, setTopSongs] = useState<Song[]>([])
+    const [globalTrends, setGlobalTrendsData] = useState<Song[]>([])
     const [rightComponent, setRightComponent] = useState<React.ReactNode>(<></>)
     // const [suggestionData, setSuggestionData] = useState<ChartData[]>([])
     const dispatch = useAppDispatch()
@@ -52,11 +52,11 @@ export default function HomePage() {
         )
     }
 
-    const TrendsComponent = ({ data, leftText }: { data: ChartData[]; leftText: string}) => {
+    const TrendsComponent = ({ data, leftText }: { data: Song[]; leftText: string}) => {
         if (!data || data.length === 0) {
             return <EmptyComponent/>
         }
-        const save = (data: ChartData) => { 
+        const save = (data: Song) => {
             dispatch(saveSong(data))
         }
 
@@ -71,7 +71,7 @@ export default function HomePage() {
                             data.slice(0, 5).map((song, index) => (
                                 <section key={index} className={`${styles.mappedImag}`} onClick={()=>{save(song)}}>
                                     <div>
-                                        <Image src={song.trackMetadata.displayImageUri} width={120} height={120} className="object-center object-cover" alt=""/>
+                                        <Image src={song.trackMetadata.displayImageUri} className="object-center object-cover w-[150] h-[150] sm:w-[250] sm:h-[250] md:w-[250] md:h-[250]" alt=""/>
                                     </div>
                                     <p>{song.trackMetadata.artists[0].name}</p>
                                     <p>{song.trackMetadata.trackName}</p>
@@ -88,7 +88,7 @@ export default function HomePage() {
         );
     };
 
-    function RightBar(args: { data: ChartData[] }) {
+    function RightBar(args: { data: Song[] }) {
         return (
             <div className={styles.rightBar}>
                 <div className={''}>
@@ -135,6 +135,7 @@ export default function HomePage() {
         { text: "Home", component: <RightBar data={topSongs}/> },
         {text: "Browse", component: <></>},
         { text: "Favourite", component: <></> },
+        {text: "Profile", component:<></>}
     ]
 
     useMemo(() => {
@@ -165,9 +166,7 @@ export default function HomePage() {
                     {rightComponent}
                 </div>
             </div>
-            <MusicPlayer
-                displayImageUri={'defaultSongData.displayImageUri'} artists={[]}
-                         trackName={'defaultSongData.trackName'} trackUri={'defaultSongData.trackUri'}
+            <MusicPlayer displayImageUri={'defaultSongData.displayImageUri'} artists={[]} trackName={'defaultSongData.trackName'} trackUri={'defaultSongData.trackUri'}
             />
         </div>
     )
