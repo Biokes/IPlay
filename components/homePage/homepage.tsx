@@ -16,11 +16,11 @@ export default function HomePage() {
     const [topSongs, setTopSongs] = useState<ChartData[]>([])
     const [globalTrends, setGlobalTrendsData] = useState<ChartData[]>([])
     const [rightComponent, setRightComponent] = useState<React.ReactNode>(<></>)
-    const [suggestionData, setSuggestionData] = useState<ChartData[]>([])
+    // const [suggestionData, setSuggestionData] = useState<ChartData[]>([])
     const dispatch = useAppDispatch()
-    const suggestion = async () => {
-        setSuggestionData([])
-    }
+    // const suggestion = async () => {
+    //     setSuggestionData([])
+    // }
     const username = useAppSelector((state)=>state.user.username)
     const globalData = useAppSelector((state) => state.Songs.globalTrends);
     const topData = useAppSelector((state)=> state.Songs.topSongs)
@@ -127,7 +127,7 @@ export default function HomePage() {
                     </section>
                 </div>
                 <TrendsComponent data={globalTrends} leftText={"Nigeria Chart"}/>
-                <TrendsComponent data={suggestionData} leftText={"Global Chart"}/>
+                <TrendsComponent data={[]} leftText={"Global Chart"}/>
             </div>
         );
     }
@@ -138,7 +138,7 @@ export default function HomePage() {
     ]
 
     useMemo(() => {
-        suggestion()
+        // suggestion()
         setRightComponent(<RightBar data={topSongs} />);
     }, [topSongs])
     
