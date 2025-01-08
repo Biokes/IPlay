@@ -1,32 +1,66 @@
 import {Box} from "@mui/material";
-// import { Navigation, Pagination } from "swiper/modules";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Song} from '@/interface/interfaces'
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import { Navigation, Pagination, Scrollbar, A11y,EffectFade } from 'swiper/modules';
+
 export default function DataSwiper({ data }: { data: Song[] }){
     return (
-        <Box sx={{paddingInline:'15px'}}>
-            <Swiper spaceBetween={5} style={{ width: "100%", height: "400px", display:'flex'}}>
-                {
-                    data.splice(0, 50).map((item, index) => (
-                        <SwiperSlide key={index}>
-                            <Box sx={{
+        <Box>
+            <Swiper spaceBetween={10} style={{
+                    width: "100%",
+                    height: '300px',
+                    gap: "10px",
+                }}
+                    modules={[Navigation, Pagination, Scrollbar, A11y,EffectFade]}
+                    slidesPerView={5}
+                    pagination={{ clickable: true }}
+                    scrollbar={{ draggable: true }}
+                    effect={'fade'}
+            >
+                {data.splice(0, 50).map((item, index) => (
+                    <SwiperSlide key={index}>
+                        <Box
+                            sx={{
                                 paddingTop: "50%",
+                                width:{
+                                    xs:'400px',
+                                    sm:'500px',
+                                    md:'650px'
+                                },
+                                height:{
+                                    xs:'400px',
+                                    sm:'500px',
+                                    md:'650px'
+                                },
                                 backgroundPosition: "center",
                                 backgroundSize: "cover",
-                                repeat:'no repeat',
-                                backgroundImage: `url(${item.trackMetadata.displayImageUri})`
+                                backgroundRepeat: "no-repeat",
+                                backgroundImage: `url(${item.trackMetadata.displayImageUri})`,
+                                transition: "transform 300ms ease-in-out, opacity 300ms ease-in-out",
+                                "&:hover": {
+                                    opacity: 0.5,
+                                    transform: "scale(1.01)",
+                                },
+                                overflow: "hidden",
+                                display: {
+                                    xs: "flex",
+                                    md: "block",
+                                },
                             }}
-                                 className="hover:opacity-20 hover:scale-105 hover:transition-transform hover:duration-300"
-                            >
-                                <div className={'bg-gray-800 opacity-10 flex pl-[10px] pr-[10px]'}>
-                                    <p>{item.trackMetadata.trackName}</p>
-                                    <p>{item.trackMetadata.artists[0].name}</p>
-                                </div>
-                            </Box>
-                        </SwiperSlide>
-                    ))
-                }
+                        >
+                            <div className={"bg-gray-800 flex pl-[10px] py-[10px]"}>
+                                <p>{item.trackMetadata.trackName}</p>
+                                <p>{item.trackMetadata.artists[0].name}</p>
+                            </div>
+                        </Box>
+                    </SwiperSlide>
+                ))}
             </Swiper>
+
         </Box>
     )
 
