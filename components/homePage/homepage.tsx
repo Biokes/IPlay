@@ -1,20 +1,29 @@
 'use client'
 import Navbar from "@/components/commons/Navbar";
-import {useAppSelector} from "@/redux/store";
 import MusicPlayer from "@/components/commons/MusicPlayer";
-import styles from '@/styles/home.module.css'
-export default function HomePage() {
-    const currentComponent = useAppSelector(state=>state.app.component)
+import styles from '@/styles/home.module.css';
+import HomeContent from "@/components/homePage/homeContent";
+import {useAppSelector} from "@/redux/store";
 
+export default function HomePage() {
+    const selectedSong= useAppSelector(state => state.Songs.selectedSongUrl)
     return (
         <div className={styles.main}>
             <section>
-                <Navbar/>
-                <div className={'h-[80vh] overflow-y-auto'}>
-                    {currentComponent}
+                <Navbar />
+                <div className={`${selectedSong?'h-[75vh] overflow-y-auto':''}`}>
+                    <HomeContent/>
                 </div>
             </section>
-            <MusicPlayer artists={[]} displayImageUri={'https://i.scdn.co/image/in9ojd/kd'} trackName={' '} trackUri={'https://i.scdn.co/wuj'}/>
+            { selectedSong &&
+                <MusicPlayer
+                    artists={[]}
+                    displayImageUri="https://i.scdn.co/"
+                    trackName="https://i.scdn.co/"
+                    trackUri="https://i.scdn.co/"
+                />
+            }
+
         </div>
-    )
+    );
 }

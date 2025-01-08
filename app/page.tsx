@@ -2,13 +2,14 @@
 import {BASE_URL} from "@/functions/func";
 import {setGlobalTrends, setLocalTrends} from "@/redux/slices/songSlice";
 import {setError} from "@/redux/slices/snackBarSlice";
-import {useAppDispatch} from "@/redux/store";
+import {useAppDispatch, useAppSelector} from "@/redux/store";
 import {useEffect} from "react";
 import HomePage from "@/components/homePage/homepage";
+import HomeContent from "@/components/homePage/homeContent";
+
 
 export default function Home() {
     const dispatch = useAppDispatch()
-
     useEffect(()=>{
         const fetchGlobalTrends = async () => {
             try {
@@ -42,7 +43,8 @@ export default function Home() {
         fetchGlobalTrends();
     },[dispatch])
 
-  return (
+
+    return (
       <>
           <HomePage/>
       </>

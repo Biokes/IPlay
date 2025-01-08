@@ -39,7 +39,8 @@
 }
 .signIn{
     animation: __slideIn .5s ease;
-    @apply flex flex-col items-center justify-center gap-[10px] border-[1px] rounded-md w-[200px] md:w-[400px]
+    @apply flex flex-col items-center justify-center gap-[10px] border-[1px] rounded-md
+    /*w-[200px] md:w-[400px]*/
 }
 .componentTitle{
     @apply text-[600] pb-[15px] font-[720]

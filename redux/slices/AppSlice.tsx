@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import HomeContent from "@/components/homePage/homeContent";
 
 interface AppData {
     component: React.ReactNode;
 }
 
 const initialState: AppData = {
-    component: <HomeContent/>,
+    component: '',
 };
 
 const appSlice = createSlice({
