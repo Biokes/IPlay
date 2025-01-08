@@ -39,16 +39,16 @@
 }
 .signIn{
     animation: __slideIn .5s ease;
-    @apply flex flex-col items-center justify-center gap-[10px] rounded-md w-[100vw] h-[85vh]
+    @apply flex flex-col items-center justify-center gap-[10px] sm:gap-[6px] rounded-md w-[100vw] h-[85vh]
 }
 .signIn> section{
     display:flex;
-    padding: 15px 30px;
+
     border-radius: 30px;
     text-align: center;
     cursor:pointer;
     margin-block: 10px;
-    @apply hover:scale-105 transform ease-in-out duration-500
+    @apply hover:scale-105 transform ease-in-out duration-500 py-[15px] px-[30px] sm:py-[10px] sm:px-[22px]
 }
 .signIn>p{
     font-weight:720;
@@ -80,4 +80,10 @@
 }
 .main{
     @apply flex justify-between h-full flex-col min-h-screen
+}
+.footer{
+    @apply flex justify-around mt-[50px] sm:mt-[30px]
+}
+.footer p{
+    @apply cursor-pointer hover:underline sm:text-[12px] text-nowrap
 }

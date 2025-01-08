@@ -2,10 +2,10 @@ import styles from '@/styles/home.module.css'
 
 export default function SignIn(){
     return (
-        <div>
+        <div className={''}>
             <main className={styles.signIn}>
                 <p style={{
-                    fontWeight: '850',
+                    fontWeight: '800',
                     fontSize: '35px',
                     textAlign: 'center',
                     fontStyle: 'italic',
@@ -22,7 +22,7 @@ export default function SignIn(){
                     <p>continue with x</p>
                 </section>
             </main>
-            <div className={'flex justify-between '}>
+            <div className={styles.footer}>
                 <p>&copy; {new Date().getFullYear()} Iplay</p>
                 <p>Privacy Policy</p>
                 <p>Terms of use</p>
