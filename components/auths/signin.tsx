@@ -18,7 +18,7 @@ export default function SignIn(){
                 <section className={'bg-blue-500 hover:bg-blue-700'}>
                     <p>continue with facebook</p>
                 </section>
-                <section className={'border-[1px]'}>
+                <section className={'border-[1px] hover:bg-gray-700'}>
                     <p>continue with x</p>
                 </section>
             </main>
