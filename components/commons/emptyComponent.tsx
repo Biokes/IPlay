@@ -1,6 +1,7 @@
+import styles from '@/styles/home.module.css';
 export default function EmptyComponent(){
     return (
-        <div className="h-[120px] flex items-center justify-center w-full border-white border-[1px] p-[10px]">
+        <div className={styles.emptyComponent}>
             <p>Sorry, No Data Available yet</p>
         </div>
     )

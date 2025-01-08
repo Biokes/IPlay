@@ -25,9 +25,7 @@
 .headers{
     @apply bg-gray-800 flex justify-between items-center px-[10px] md:px-[20px] h-[20px] md:h-[40px] border-b-white border-[1px]
 }
-.trackName{
-    @apply md:max-w-[100px] text-nowrap text-[40px] overflow-ellipsis text-[11px] md:text-[15px]
-}
+
 .headers> p{
     @apply text-[10px] md:text-[15px] hover:cursor-pointer
 }
@@ -42,4 +40,16 @@
 .signIn{
     animation: __slideIn .5s ease;
     @apply flex flex-col items-center justify-center gap-[10px] border-[1px] rounded-md w-[200px] md:w-[400px]
+}
+.componentTitle{
+    @apply text-[600] pb-[15px] font-[720]
+}
+.trackMetaData>p{
+    @apply md:max-w-[100px] text-nowrap  overflow-ellipsis text-[11px] md:text-[15px]
+}
+.emptyComponent{
+    @apply h-[200px] flex items-center justify-center w-full border-white border-[1px] p-[10px]
+}
+.emptyComponent>p{
+    @apply font-[710] text-[15px] text-nowrap
 }
