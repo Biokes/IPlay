@@ -1,40 +1,50 @@
 'use client'
-import HomePage from "@/components/homePage/homepage";
-import {useAppDispatch} from "@/redux/store";
-import {useMemo} from "react"
 import {BASE_URL} from "@/functions/func";
 import {setGlobalTrends, setLocalTrends} from "@/redux/slices/songSlice";
-import {setMessage} from "@/redux/slices/snackBarSlice";
+import {setError} from "@/redux/slices/snackBarSlice";
+import {useAppDispatch} from "@/redux/store";
+import {useEffect} from "react";
+import HomePage from "@/components/homePage/homepage";
 
 export default function Home() {
-  const dispatch = useAppDispatch()
-  useMemo(()=>{
-    fetch(`${BASE_URL}/api/v1/songs/localTrends`)
-        .then(result=>result.json())
-        .then(localSongs=>dispatch(setLocalTrends(localSongs)))
-        .catch(error=> {
-          if(error instanceof Error) {
-            dispatch(setMessage(error.message))
-          }else{
-            dispatch(setMessage("Something went wrong \n or check your internet connection."))
-          }
-          console.log("error fetching localSongs")
-        })
+    const dispatch = useAppDispatch()
 
-    fetch(`${BASE_URL}/api/v1/songs/globalTrends`)
-        .then(result=>result.json())
-        .then(globalSongs=>dispatch(setGlobalTrends(globalSongs)))
-        .catch(error=> {
-          if(error instanceof Error) {
-            dispatch(setMessage(error.message))
-          }else{
-            dispatch(setMessage("Pls check your internet connection."))
-          }
-          console.log("error fetching globalSongs")
-        })
-  },[dispatch])
+    useEffect(()=>{
+        const fetchGlobalTrends = async () => {
+            try {
+                const response = await fetch(`${BASE_URL}/api/v1/songs/globalTrends`);
+                const globalSongs = await response.json();
+                dispatch(setGlobalTrends(globalSongs));
+            } catch (error) {
+                if (error instanceof Error) {
+                    dispatch(setError(error.message));
+                }
+                else {
+                    dispatch(setError("Pls check your internet connection."));
+                }
+            }
+        }
+        const naijaTop = async()=> {
+            try {
+                const response = await fetch(`${BASE_URL}/api/v1/songs/globalTrends`);
+                const naijaSongs = await response.json();
+                dispatch(setLocalTrends(naijaSongs));
+            } catch (error) {
+                if (error instanceof Error) {
+                    dispatch(setError(error.message));
+                }
+                else {
+                    dispatch(setError("Pls check your internet connection."));
+                }
+            }
+        }
+        naijaTop();
+        fetchGlobalTrends();
+    },[dispatch])
 
-  return (    
-    <HomePage/>
+  return (
+      <>
+          <HomePage/>
+      </>
   );
 }

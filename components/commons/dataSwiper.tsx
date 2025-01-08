@@ -23,9 +23,7 @@ export default function DataSwiper({ data }: { data: Song[] }){
             "& .swiper": {
                 paddingInline: { xs: "1rem", md: "4rem" }
             }
-        }}
-        >
-
+        }}>
             <Swiper
                 spaceBetween={10}
                 grabCursor={true}

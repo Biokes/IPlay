@@ -4,7 +4,7 @@ import { Song, UserData } from '@/interface/interfaces'
 
 const initialState: UserData = {
     topSongs: [],
-    lastDateUpdated: '',
+    // lastDateUpdated: '',
     globalTrends: [],
     clickedSong: '',
     selectedSongUrl:''
@@ -17,9 +17,9 @@ const songSLice = createSlice({
         setLocalTrends(state, action: PayloadAction<Song[]>) {
                 state.topSongs = action.payload;
             },
-        setLastDateUpdated(state, action: PayloadAction<string>) { 
-            state.lastDateUpdated = action.payload;
-        },
+        // setLastDateUpdated(state, action: PayloadAction<string>) {
+        //     state.lastDateUpdated = action.payload;
+        // },
         setGlobalTrends(state, action: PayloadAction<Song[]>) {
             state.globalTrends = action.payload
         },
@@ -34,6 +34,5 @@ const songSLice = createSlice({
 })
 
 export const {setLocalTrends, setSelectedSongUrl
-            ,setLastDateUpdated,setGlobalTrends,
-            saveSong} = songSLice.actions;
+            ,setGlobalTrends, saveSong} = songSLice.actions;
 export default songSLice.reducer;

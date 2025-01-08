@@ -48,7 +48,7 @@ export interface Song {
 export interface UserData{
     topSongs: Song[];
     globalTrends: Song[];
-    lastDateUpdated: string;
+    // lastDateUpdated: string;
     clickedSong : Song | string,
     selectedSongUrl: string
 }
@@ -63,4 +63,7 @@ export interface PausePlayArgs {
     ref: RefObject<HTMLAudioElement | null>;
     isPlaying: boolean;
     setter: Dispatch<SetStateAction<boolean>>;
+}
+export interface SnackMessage{
+    color:string;
 }
