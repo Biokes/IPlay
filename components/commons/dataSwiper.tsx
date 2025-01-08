@@ -1,49 +1,31 @@
 import {Box} from "@mui/material";
-import { Navigation, Pagination } from "swiper/modules";
+// import { Navigation, Pagination } from "swiper/modules";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Song} from '@/interface/interfaces'
 export default function DataSwiper({ data }: { data: Song[] }){
     return (
-        <Box sx={{
-            "& .swiper-slide": {
-                width: "100%",
-                opacity: "0.6",
-                paddingBottom: "3rem"
-            },
-            "& .swiper-slide-active": { opacity: 1 },
-            "& .swiper-pagination-bullet": {
-                backgroundColor: "text.primary"
-            },
-            "& .swiper-button-next, & .swiper-button-prev": {
-                color: "text.primary",
-                "&::after": {
-                    fontSize: { xs: "1rem", md: "2rem" }
-                }
-            },
-            "& .swiper": {
-                paddingInline: { xs: "1rem", md: "4rem" }
-            }
-        }}>
-            <Swiper
-                spaceBetween={10}
-                grabCursor={true}
-                pagination={{ clickable: true }}
-                navigation={true}
-                modules={[Navigation, Pagination]}
-                style={{ width: "100%", height: "max-content" }}>
+        <Box sx={{paddingInline:'15px'}}>
+            <Swiper spaceBetween={5} style={{ width: "100%", height: "400px", display:'flex'}}>
                 {
-                    data.splice(0, 10).map((item, index) => (
+                    data.splice(0, 50).map((item, index) => (
                         <SwiperSlide key={index}>
                             <Box sx={{
-                                paddingTop: "60%",
-                                backgroundPosition: "top",
+                                paddingTop: "50%",
+                                backgroundPosition: "center",
                                 backgroundSize: "cover",
+                                repeat:'no repeat',
                                 backgroundImage: `url(${item.trackMetadata.displayImageUri})`
                             }}
-                            />
+                                 className="hover:opacity-20 hover:scale-105 hover:transition-transform hover:duration-300"
+                            >
+                                <div className={'bg-gray-800 opacity-10 flex pl-[10px] pr-[10px]'}>
+                                    <p>{item.trackMetadata.trackName}</p>
+                                    <p>{item.trackMetadata.artists[0].name}</p>
+                                </div>
+                            </Box>
                         </SwiperSlide>
                     ))
-            }
+                }
             </Swiper>
         </Box>
     )

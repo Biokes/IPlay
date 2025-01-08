@@ -13,11 +13,13 @@
 // import TrendsComponent from "@/components/commons/PackingComponent";
 
 import Navbar from "@/components/homePage/Navbar";
+import NaijaTops from "@/components/homePage/NaijaTops";
 
 export default function HomePage() {
     return (
         <>
             <Navbar/>
+            <NaijaTops/>
         </>
     )
     // // const [topSongs, setTopSongs] = useState<Song[]>([])

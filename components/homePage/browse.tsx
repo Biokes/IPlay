@@ -8,7 +8,8 @@ export default function Browse(params: {firstComponent: React.ReactNode,secondCo
     return (
         <main>
                 <form className='border-[1px] border-white flex w-full md:w-[400px] rounded-[10px] overflow-hidden'>
-                    <input type="text" placeholder={"Search artist"} value={searchQuery} onChange={(e) => { setSearchQuery(e.target.value)}}
+                    <input type="text" placeholder={"Search artist"} value={searchQuery}
+                           onChange={(e) => { setSearchQuery(e.target.value)}}
                         className={`w-[90%] px-[10px] h-[50px] focus:outline-none outlie-none`}/>
                         <div className='w-[10%]'>
                             <SearchIcon className={"w-[100%] h-[50px] hover:cursor-pointer hover:bg-gray-300 hover:text-gray-900"}/>
