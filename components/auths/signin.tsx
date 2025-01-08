@@ -1,21 +1,33 @@
 import styles from '@/styles/home.module.css'
-import google from '@/public/googleImage.png'
-import Image from 'next/image'
+
 export default function SignIn(){
     return (
-        <main className={styles.signIn}>
-            <section>
-                <p>continue with google</p>
-                <Image src={google} width={20} height={20} alt={''}/>
-            </section>
-            <section>
-                <p>continue with facebook</p>
-                <Image src={google} width={20} height={20} alt={''}/>
-            </section>
-            <section>
-                <p>continue with x</p>
-                <Image src={google} width={20} height={20} alt={''}/>
-            </section>
-        </main>
+        <div>
+            <main className={styles.signIn}>
+                <p style={{
+                    fontWeight: '850',
+                    fontSize: '35px',
+                    textAlign: 'center',
+                    fontStyle: 'italic',
+                    fontFamily: 'Dm sans'
+                }}>IPlay Music</p>
+                <p>Sign up/Sign In</p>
+                <section className={'bg-red-600 hover:bg-red-700 '}>
+                    <p>continue with google</p>
+                </section>
+                <section className={'bg-blue-500 hover:bg-blue-700'}>
+                    <p>continue with facebook</p>
+                </section>
+                <section className={'border-[1px]'}>
+                    <p>continue with x</p>
+                </section>
+            </main>
+            <div className={'flex justify-between '}>
+                <p>&copy; {new Date().getFullYear()} Iplay</p>
+                <p>Privacy Policy</p>
+                <p>Terms of use</p>
+            </div>
+
+        </div>
     )
 }

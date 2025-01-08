@@ -39,9 +39,26 @@
 }
 .signIn{
     animation: __slideIn .5s ease;
-    @apply flex flex-col items-center justify-center gap-[10px] border-[1px] rounded-md
-    /*w-[200px] md:w-[400px]*/
+    @apply flex flex-col items-center justify-center gap-[10px] rounded-md w-[100vw] h-[85vh]
 }
+.signIn> section{
+    display:flex;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-align: center;
+    cursor:pointer;
+    margin-block: 10px;
+    @apply hover:scale-105 transform ease-in-out duration-500
+}
+.signIn>p{
+    font-weight:720;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+.signIn>section>p{
+    font-weight: 650;
+}
+
 .componentTitle{
     @apply text-[600] pb-[15px] font-[720]
 }
