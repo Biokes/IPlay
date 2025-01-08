@@ -5,15 +5,16 @@ import songSlice from '@/redux/slices/songSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import userSlice from "@/redux/slices/userSlice";
 import snackBarSlice from "@/redux/slices/snackBarSlice";
+import appSlice from "@/redux/slices/AppSlice";
 
 const persistConfig = {
   key: 'song_root',
   storage,
-  whitelist: ['Songs'],
+  whitelist: ['Songs','app'],
 };
 
 const rootReducer = combineReducers({
-  Songs: songSlice, user: userSlice,snackBarSlice: snackBarSlice
+  Songs: songSlice, user: userSlice,snackBarSlice: snackBarSlice,app:appSlice
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({

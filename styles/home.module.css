@@ -48,8 +48,18 @@
     @apply md:max-w-[100px] text-nowrap  overflow-ellipsis text-[11px] md:text-[15px]
 }
 .emptyComponent{
-    @apply h-[200px] flex items-center justify-center w-full border-white border-[1px] p-[10px]
+    @apply h-[170px] flex items-center justify-center w-full border-white border-[1px] p-[10px]
 }
 .emptyComponent>p{
     @apply font-[710] text-[15px] text-nowrap
+}
+.hamburgerList{
+    @apply lg:hidden fixed top-0 right-0 w-[40%] min-h-screen bg-gray-800  z-50 flex flex-col backdrop-blur-sm
+    space-y-6 transform transition-all duration-[2000] ease-in-out pt-[30px] px-[10px]
+}
+.hamburgerListLink {
+    @apply hover:bg-blue-500 text-[25px] font-[700] w-full rounded-md px-[20px]
+}
+.main{
+    @apply flex justify-between h-full flex-col min-h-screen
 }

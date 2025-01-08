@@ -52,7 +52,7 @@ export default function MusicPlayer(song: TrackMetadata) {
     }, []);
 
     return (
-        <div className="h-[100px] shadow-white shadow-md flex flex-col md:flex-row items-center justify-around">
+        <div className="h-[150px] shadow-white shadow-md flex flex-col md:flex-row items-center justify-around">
             <section className={"hidden md:flex"}>
                 <p>{song.trackName}</p>
                 <p>{song.artists[0]?.name}</p>

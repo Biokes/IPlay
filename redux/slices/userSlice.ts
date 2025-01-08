@@ -6,7 +6,7 @@ const initialState: User= {
 }
 
 const userSlice  = createSlice({
-    name:'song',
+    name:'user',
     initialState,
     reducers:{
         setUsername(state, action: PayloadAction<string>) {
