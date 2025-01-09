@@ -5,28 +5,32 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { Navigation, Pagination, Scrollbar, A11y,EffectFade } from 'swiper/modules';
+import { Navigation, Pagination} from 'swiper/modules';
 import EmptyComponent from "@/components/commons/emptyComponent";
 import styles from "@/styles/home.module.css"
 
 export default function DataSwiper({ data }: { data: Song[] }){
-    if(data.length === 0) {
+    if(data.length === 0 || !Array.isArray(data)) {
         return (
             <EmptyComponent/>
         )
     }
     return (
         <Box>
-            <Swiper spaceBetween={10} style={{
-                    width: "100%",
-                    height: '300px',
-                    gap: "10px",
-                }} modules={[Navigation, Pagination, Scrollbar, A11y,EffectFade]}
-                    slidesPerView={5}
+            <Swiper spaceBetween={10}
+                    className={'h-[300px]'}
+                    modules={[Navigation, Pagination]}
+                    slidesPerView={3}
                     pagination={{ clickable: true }}
                     scrollbar={{ draggable: true }}
-                    effect={'fade'}>
-                {data.splice(0, 50).map((item, index) => (
+                    loop={true}
+                    style={{
+                        '--swiper-pagination-bottom':'#ffffff',
+                        '--swiper-navigation-color':'#ffffff',
+                        '--swiper-pagination-color':'#ffffff',
+                    } as React.CSSProperties & { [key: string]: string }}
+            >
+                {data.slice(0, 50).map((item, index) => (
                     <SwiperSlide key={index}>
                         <Box sx={{
                                 paddingTop: "50%",

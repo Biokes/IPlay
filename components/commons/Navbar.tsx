@@ -14,6 +14,8 @@ export default function Navbar () {
     const toggleHamburger=()=>{
         setOpen(!isOpen);
     }
+
+
     useEffect(() => {
         const handleClickOutside = (event:MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(event.target as Node)) {

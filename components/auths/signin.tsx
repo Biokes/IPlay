@@ -1,8 +1,13 @@
 import styles from '@/styles/home.module.css'
+import Link from "next/link";
+
 
 export default function SignIn(){
     return (
-        <div className={''}>
+        <div className={'md:pt-[20px]'}>
+            <Link href={'/'} className={styles.link}>
+                Back
+            </Link>
             <main className={styles.signIn}>
                 <p style={{
                     fontWeight: '800',

@@ -23,7 +23,6 @@ export default function HomePage() {
                     trackUri="https://i.scdn.co/"
                 />
             }
-
         </div>
     );
 }

@@ -1,16 +1,16 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {SnackMessage} from '@/interface/interfaces'
+import {Snacks, SnackType} from '@/interface/interfaces'
 
-const SUCCESS: SnackMessage ={
-    color: "#389E0D"
+const SUCCESS: SnackType ={
+    type: "SUCCESS"
 }
-const ERROR : SnackMessage= {
-    color:"#F5222D"
+const ERROR : SnackType= {
+    type:"ERROR"
 }
 
-const initialState  = {
+const initialState:Snacks  = {
     initialMessage: '',
-    messageType: SUCCESS
+    snackType: SUCCESS
 }
 
 const snackBarSlice = createSlice({
@@ -22,7 +22,7 @@ const snackBarSlice = createSlice({
         },
         setError(state ,action:PayloadAction<string>){
             state.initialMessage = action.payload;
-            state.messageType = ERROR;
+            state.snackType = ERROR;
         }
     }
 })

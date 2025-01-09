@@ -14,7 +14,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  Songs: songSlice, user: userSlice,snackBarSlice: snackBarSlice,app:appSlice
+  Songs: songSlice, user: userSlice,snack: snackBarSlice,app:appSlice
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({

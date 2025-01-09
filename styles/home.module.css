@@ -39,7 +39,7 @@
 }
 .signIn{
     animation: __slideIn .5s ease;
-    @apply flex flex-col items-center justify-center gap-[10px] sm:gap-[6px] rounded-md w-[100vw] h-[85vh]
+    @apply flex flex-col items-center justify-center gap-[10px] sm:gap-[6px] rounded-md w-[100vw] h-[80vh]
 }
 .signIn> section{
     display:flex;
@@ -56,7 +56,7 @@
 }
 .signIn>section>p{
     font-weight: 650;
-    @apply md:font-[750] md:text-[20px]
+    @apply md:font-[700] md:text-[15px]
 }
 
 .componentTitle{
@@ -66,10 +66,10 @@
     @apply md:max-w-[100px] text-nowrap  overflow-ellipsis text-[11px] md:text-[15px]
 }
 .emptyComponent{
-    @apply h-[170px] flex items-center justify-center w-full border-white border-[1px] p-[10px]
+    @apply h-[170px] md:h-[120px] flex flex-col gap-[15px] items-center justify-center w-full border-white border-[1px] p-[10px] rounded-sm
 }
 .emptyComponent>p{
-    @apply font-[710] text-[15px] text-nowrap
+    @apply font-[700] text-[13px] text-nowrap
 }
 .hamburgerList{
     @apply lg:hidden fixed top-0 right-0 w-[40%] min-h-screen bg-gray-800  z-50 flex flex-col backdrop-blur-sm
@@ -87,3 +87,18 @@
 .footer p{
     @apply cursor-pointer hover:underline sm:text-[12px] text-nowrap md:text-[17px]
 }
+.link{
+    @apply border-[1px] rounded-md hover:bg-gray-700 px-[15px] ml-[10px] md:ml-[30px] text-center
+    transform hover:scale-105 py-[5px] mr-[100px] text-[10px] duration-500
+}
+/*.snackBar{*/
+/*    position:absolute;*/
+/*    bottom:30px;*/
+/*    right: 30px;*/
+/*    display:flex;*/
+/*    align-items: flex-end;*/
+/*    flex-direction: column;*/
+/*    overflow: hidden;*/
+/*    text-wrap:nowrap;*/
+/*    padding:20px;*/
+/*}*/

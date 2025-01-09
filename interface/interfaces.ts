@@ -64,6 +64,10 @@ export interface PausePlayArgs {
     isPlaying: boolean;
     setter: Dispatch<SetStateAction<boolean>>;
 }
-export interface SnackMessage{
-    color:string;
+export interface SnackType {
+    type:string;
+}
+export interface Snacks {
+    initialMessage: string,
+    snackType:SnackType
 }
