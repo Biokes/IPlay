@@ -5,7 +5,7 @@ import SpotifyProvider from "next-auth/providers/spotify";
 import {NextApiRequest, NextApiResponse} from "next";
 import AppleProvider from "next-auth/providers/apple";
 
-const options = {
+const options = NextAuth({
     providers: [
         InstagramProvider({
             clientId: process.env.INSTAGRAM_CLIENT_ID,
@@ -25,9 +25,7 @@ const options = {
             version: "2.0"
         })
     ],
-    database: process.env.DATABASE_URL
-}
-export default function auth(req: NextApiRequest, res: NextApiResponse) {
-    return (NextAuth(req, res, options))
-}
+})
 
+
+export {options as GET, options as POST}

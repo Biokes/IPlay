@@ -31,7 +31,7 @@ export default function Navbar () {
     const SlideMenu =()=>{
         return (
             <div ref={menuRef} className={`${ isOpen ? "-translate-x-0 " : "-translate-x-full"} ${styles.hamburgerList}`}>
-                <Link href={username? "#":'/auth'} className={styles.hamburgerListLink}>{username?'SignOut':'SignIn'}</Link>
+                <Link href={username? "#":'/routes'} className={styles.hamburgerListLink}>{username?'SignOut':'SignIn'}</Link>
             </div>
         )
     }
@@ -48,7 +48,7 @@ export default function Navbar () {
                      <div className={'p-[5px]'}>
                          <PersonIcon className={'text-black'} />
                      </div>
-                     <Link className={'text-blue-500'} href={username? "#":'/auth'}>
+                     <Link className={'text-blue-500'} href={username? "#":'/routes'}>
                          { !username? "Login" : username}
                      </Link>
                  </button>
