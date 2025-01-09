@@ -21,10 +21,10 @@ export default function SignIn(){
                     <p>continue with google</p>
                 </section>
                 <section className={'bg-blue-500 hover:bg-blue-700'}>
-                    <p>continue with facebook</p>
+                    <p>continue with Instagram</p>
                 </section>
-                <section className={'border-[1px] hover:bg-gray-700'}>
-                    <p>continue with x</p>
+                <section className={'border-[1px] hover:text-white hover:bg-red-700'}>
+                    <p>continue with spotify</p>
                 </section>
             </main>
             <div className={styles.footer}>
