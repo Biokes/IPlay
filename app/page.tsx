@@ -39,9 +39,24 @@ export default function Home() {
                 }
             }
         };
+        const fetchLatestRelease= async () =>{
+            try{
+                const response = await fetch(` https://api.spotify.com/v1/browse/new-releases`,
+                    headers:{
+                }
+            }${process.env.SPOTIFY_API_CLIENT_ID}`)
+            }catch(error){
+                if (error instanceof Error) {
+                    dispatch(setError(error.message));
+                } else {
+                    dispatch(setError("Please check your internet connection."));
+                }
+            }
+        }
 
         fetchGlobalTrends();
         fetchLocalTrends();
+        fetchLatestRelease();
     }, [dispatch]);
 
     return (

@@ -22,8 +22,9 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['persist/PERSIST', 'persist/REGISTER'],
+          ignoredActions: ['persist/PERSIST', 'persist/REGISTER'],
       },
+        immutableCheck: false,
     }),
 });
 export const persist = persistStore(store);
